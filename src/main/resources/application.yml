@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: ud-vote-spring
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 30
+        order_updates: true
+    show-sql: true
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: email
+    password: app-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  error:
+    include-message: always
+
+jwt:
+  secret: key
+
+admin:
+  default:
+    username: username
+    password: password
+    email: email
+
+logging:
+  level:
+    root: INFO
+    com:
+      goodamcodes: DEBUG
+
+url:
+  image: public/images/
+  video: public/videos/

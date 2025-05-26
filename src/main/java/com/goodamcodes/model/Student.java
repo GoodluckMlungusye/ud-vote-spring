@@ -1,0 +1,30 @@
+package com.goodamcodes.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "students")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Student {
+
+    @Id
+    private Long id;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name="id")
+    private UserInfo user;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "college_id")
+    private College college;
+
+    private String registrationNumber;
+
+    private String imageUrl;
+}

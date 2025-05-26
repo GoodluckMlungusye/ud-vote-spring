@@ -1,2 +1,2 @@
-# ud-vote-backend
+# ud-vote-spring
 Backend environment for UDVote mobile app

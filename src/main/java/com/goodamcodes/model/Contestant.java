@@ -26,7 +26,4 @@ public class Contestant {
 
     private String slogan;
     private String videoUrl;
-
-    @Column(nullable=false)
-    private Integer voteCount = 0;
 }

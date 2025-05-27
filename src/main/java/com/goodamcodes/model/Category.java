@@ -27,8 +27,6 @@ public class Category {
     @Column(unique=true)
     private String abbreviation;
 
-    private Integer contestantsNumber;
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "election_id")
     @JsonBackReference

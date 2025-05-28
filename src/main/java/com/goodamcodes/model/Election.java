@@ -31,7 +31,7 @@ public class Election {
 
     @OneToMany(mappedBy = "election", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Category> categories = new ArrayList<>();
+    private List<Category> categories;
 
     @CreationTimestamp
     private Instant createdAt;

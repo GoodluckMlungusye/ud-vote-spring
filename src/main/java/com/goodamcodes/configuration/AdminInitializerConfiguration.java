@@ -35,6 +35,8 @@ public class AdminInitializerConfiguration {
         return args -> {
             if (repository.findByUsername(defaultAdminUsername).isEmpty()) {
                 UserInfo admin = UserInfo.builder()
+                        .firstName(defaultAdminUsername)
+                        .lastName(defaultAdminUsername)
                         .username(defaultAdminUsername)
                         .email(defaultAdminEmail)
                         .password(encoder.encode(defaultAdminPassword))

@@ -8,7 +8,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -20,11 +19,6 @@ public class GlobalExceptionHandlerConfiguration{
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponseDTO> handleIllegalArgument(IllegalArgumentException exception) {
         return buildResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
-    }
-
-    @ExceptionHandler(WebClientRequestException.class)
-    public ResponseEntity<ErrorResponseDTO> handleWebClient(WebClientRequestException exception) {
-        return buildResponse(HttpStatus.SERVICE_UNAVAILABLE, "Downstream service is unavailable. Try again later.");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

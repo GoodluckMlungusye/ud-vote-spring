@@ -1,8 +1,10 @@
-package com.goodamcodes.service;
+package com.goodamcodes.service.security;
 
+import com.goodamcodes.dto.security.UserAuthenticationDTO;
+import com.goodamcodes.dto.security.UserInfoRequestDTO;
 import com.goodamcodes.enums.Role;
-import com.goodamcodes.model.UserInfo;
-import com.goodamcodes.repository.UserInfoRepository;
+import com.goodamcodes.model.security.UserInfo;
+import com.goodamcodes.repository.security.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,16 +26,25 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public UserInfo register(UserInfo user) {
-        if(userInfoService.userExists(user.getUsername())) {
+    public String register(UserInfoRequestDTO userInfoRequestDTO) {
+        if(userInfoService.userExists(userInfoRequestDTO.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
-        user.setPassword(encoder.encode(user.getPassword()));
+
+        UserInfo user = new UserInfo();
+        user.setFirstName(userInfoRequestDTO.getFirstName());
+        user.setLastName(userInfoRequestDTO.getLastName());
+        user.setUsername(userInfoRequestDTO.getUsername());
+        user.setPassword(encoder.encode(userInfoRequestDTO.getPassword()));
+        user.setEmail(userInfoRequestDTO.getEmail());
         user.setRoles(List.of(Role.USER));
-        return userInfoRepository.save(user);
+
+        UserInfo registeredUser = userInfoRepository.save(user);
+
+        return "User " + registeredUser.getUsername() + " registered successfully!";
     }
 
-    public String authenticate(UserInfo user) {
+    public String authenticate(UserAuthenticationDTO user) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         if (authentication.isAuthenticated()) {
             UserInfo savedUser = userInfoRepository.findByUsername(user.getUsername())

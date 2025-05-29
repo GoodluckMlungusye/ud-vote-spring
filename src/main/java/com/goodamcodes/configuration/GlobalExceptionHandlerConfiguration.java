@@ -1,7 +1,7 @@
 package com.goodamcodes.configuration;
 
-import com.goodamcodes.dto.ErrorResponseDTO;
-import com.goodamcodes.dto.ValidationErrorResponseDTO;
+import com.goodamcodes.dto.error_exceptions.ErrorResponseDTO;
+import com.goodamcodes.dto.error_exceptions.ValidationErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

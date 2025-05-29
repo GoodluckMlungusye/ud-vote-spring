@@ -1,8 +1,8 @@
 package com.goodamcodes.configuration;
 
 import com.goodamcodes.enums.Role;
-import com.goodamcodes.model.UserInfo;
-import com.goodamcodes.repository.UserInfoRepository;
+import com.goodamcodes.model.security.UserInfo;
+import com.goodamcodes.repository.security.UserInfoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;

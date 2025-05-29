@@ -1,4 +1,4 @@
-package com.goodamcodes.dto;
+package com.goodamcodes.dto.error_exceptions;
 
 import java.time.LocalDateTime;
 

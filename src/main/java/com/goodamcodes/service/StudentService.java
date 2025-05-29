@@ -4,6 +4,7 @@ import com.goodamcodes.dto.StudentDTO;
 import com.goodamcodes.mapper.StudentMapper;
 import com.goodamcodes.model.Student;
 import com.goodamcodes.repository.StudentRepository;
+import com.goodamcodes.service.utility.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

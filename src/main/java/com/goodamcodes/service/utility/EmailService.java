@@ -1,4 +1,4 @@
-package com.goodamcodes.service;
+package com.goodamcodes.service.utility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

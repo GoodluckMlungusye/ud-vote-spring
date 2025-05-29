@@ -1,8 +1,8 @@
-package com.goodamcodes.service;
+package com.goodamcodes.service.security;
 
-import com.goodamcodes.model.PasswordResetCode;
-import com.goodamcodes.model.UserInfo;
-import com.goodamcodes.repository.PasswordResetCodeRepository;
+import com.goodamcodes.model.security.PasswordResetCode;
+import com.goodamcodes.model.security.UserInfo;
+import com.goodamcodes.repository.security.PasswordResetCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

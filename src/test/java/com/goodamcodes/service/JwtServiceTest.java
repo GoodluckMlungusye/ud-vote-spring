@@ -1,5 +1,6 @@
 package com.goodamcodes.service;
 
+import com.goodamcodes.service.security.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

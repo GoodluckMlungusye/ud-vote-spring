@@ -1,9 +1,10 @@
 package com.goodamcodes.service;
 
-import com.goodamcodes.dto.RoleUpdateRequestDTO;
+import com.goodamcodes.dto.security.RoleUpdateRequestDTO;
 import com.goodamcodes.enums.Role;
-import com.goodamcodes.model.UserInfo;
-import com.goodamcodes.repository.UserInfoRepository;
+import com.goodamcodes.model.security.UserInfo;
+import com.goodamcodes.repository.security.UserInfoRepository;
+import com.goodamcodes.service.security.AdminService;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

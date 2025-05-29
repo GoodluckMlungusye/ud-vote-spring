@@ -1,9 +1,9 @@
-package com.goodamcodes.controller;
+package com.goodamcodes.controller.security;
 
-import com.goodamcodes.dto.ConfirmPasswordResetDTO;
-import com.goodamcodes.dto.EmailRequestDTO;
-import com.goodamcodes.dto.UserInfoRequestDTO;
-import com.goodamcodes.service.UserInfoService;
+import com.goodamcodes.dto.security.ConfirmPasswordResetDTO;
+import com.goodamcodes.dto.security.EmailRequestDTO;
+import com.goodamcodes.dto.security.UserInfoRequestDTO;
+import com.goodamcodes.service.security.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

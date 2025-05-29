@@ -1,4 +1,4 @@
-package com.goodamcodes.dto;
+package com.goodamcodes.dto.security;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,4 +10,5 @@ public class UserInfoRequestDTO {
     private String lastName;
     private String username;
     private String email;
+    private String password;
 }

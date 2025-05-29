@@ -1,5 +1,6 @@
 package com.goodamcodes.model;
 
+import com.goodamcodes.model.security.UserInfo;
 import jakarta.persistence.*;
 import lombok.*;
 

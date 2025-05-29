@@ -1,9 +1,9 @@
-package com.goodamcodes.service;
+package com.goodamcodes.service.security;
 
 import com.goodamcodes.enums.Role;
-import com.goodamcodes.dto.RoleUpdateRequestDTO;
-import com.goodamcodes.model.UserInfo;
-import com.goodamcodes.repository.UserInfoRepository;
+import com.goodamcodes.dto.security.RoleUpdateRequestDTO;
+import com.goodamcodes.model.security.UserInfo;
+import com.goodamcodes.repository.security.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

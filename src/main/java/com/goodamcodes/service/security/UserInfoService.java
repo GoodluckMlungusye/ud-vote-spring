@@ -1,13 +1,14 @@
-package com.goodamcodes.service;
-import com.goodamcodes.dto.ConfirmPasswordResetDTO;
-import com.goodamcodes.dto.EmailRequestDTO;
-import com.goodamcodes.dto.UserInfoRequestDTO;
-import com.goodamcodes.dto.UserInfoResponseDTO;
+package com.goodamcodes.service.security;
+import com.goodamcodes.dto.security.ConfirmPasswordResetDTO;
+import com.goodamcodes.dto.security.EmailRequestDTO;
+import com.goodamcodes.dto.security.UserInfoRequestDTO;
+import com.goodamcodes.dto.security.UserInfoResponseDTO;
 import com.goodamcodes.mapper.UserInfoMapper;
-import com.goodamcodes.model.PasswordResetCode;
-import com.goodamcodes.model.UserInfo;
-import com.goodamcodes.repository.PasswordResetCodeRepository;
-import com.goodamcodes.repository.UserInfoRepository;
+import com.goodamcodes.model.security.PasswordResetCode;
+import com.goodamcodes.model.security.UserInfo;
+import com.goodamcodes.repository.security.PasswordResetCodeRepository;
+import com.goodamcodes.repository.security.UserInfoRepository;
+import com.goodamcodes.service.utility.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -92,6 +93,8 @@ public class UserInfoService implements UserDetailsService {
         UserInfo existingUser = userInfoRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        existingUser.setFirstName(userInfoRequestDTO.getFirstName());
+        existingUser.setLastName(userInfoRequestDTO.getLastName());
         existingUser.setUsername(userInfoRequestDTO.getUsername());
         existingUser.setEmail(userInfoRequestDTO.getEmail());
 

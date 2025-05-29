@@ -1,7 +1,7 @@
 package com.goodamcodes.component;
 
-import com.goodamcodes.service.JwtService;
-import com.goodamcodes.service.UserInfoService;
+import com.goodamcodes.service.security.JwtService;
+import com.goodamcodes.service.security.UserInfoService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,11 +1,11 @@
-package com.goodamcodes.controller;
+package com.goodamcodes.controller.security;
 
-import com.goodamcodes.dto.RoleUpdateRequestDTO;
-import com.goodamcodes.dto.UserInfoResponseDTO;
+import com.goodamcodes.dto.security.RoleUpdateRequestDTO;
+import com.goodamcodes.dto.security.UserInfoResponseDTO;
 import com.goodamcodes.enums.Role;
-import com.goodamcodes.repository.UserInfoRepository;
-import com.goodamcodes.service.AdminService;
-import com.goodamcodes.service.UserInfoService;
+import com.goodamcodes.repository.security.UserInfoRepository;
+import com.goodamcodes.service.security.AdminService;
+import com.goodamcodes.service.security.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

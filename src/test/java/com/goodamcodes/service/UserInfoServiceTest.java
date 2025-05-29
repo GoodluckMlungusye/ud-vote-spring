@@ -1,9 +1,10 @@
 package com.goodamcodes.service;
 
-import com.goodamcodes.dto.UserInfoResponseDTO;
+import com.goodamcodes.dto.security.UserInfoResponseDTO;
 import com.goodamcodes.mapper.UserInfoMapper;
-import com.goodamcodes.model.UserInfo;
-import com.goodamcodes.repository.UserInfoRepository;
+import com.goodamcodes.model.security.UserInfo;
+import com.goodamcodes.repository.security.UserInfoRepository;
+import com.goodamcodes.service.security.UserInfoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

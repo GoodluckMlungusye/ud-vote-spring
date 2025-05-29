@@ -1,4 +1,4 @@
-package com.goodamcodes.service;
+package com.goodamcodes.service.utility;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

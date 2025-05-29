@@ -1,4 +1,4 @@
-package com.goodamcodes.model;
+package com.goodamcodes.model.security;
 
 import com.goodamcodes.enums.Role;
 import jakarta.persistence.*;

@@ -1,8 +1,14 @@
 package com.goodamcodes.service;
 
+import com.goodamcodes.dto.security.UserAuthenticationDTO;
+import com.goodamcodes.dto.security.UserInfoRequestDTO;
 import com.goodamcodes.enums.Role;
-import com.goodamcodes.model.UserInfo;
-import com.goodamcodes.repository.UserInfoRepository;
+import com.goodamcodes.mapper.UserInfoMapper;
+import com.goodamcodes.model.security.UserInfo;
+import com.goodamcodes.repository.security.UserInfoRepository;
+import com.goodamcodes.service.security.AuthenticationService;
+import com.goodamcodes.service.security.JwtService;
+import com.goodamcodes.service.security.UserInfoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -31,6 +37,9 @@ class AuthenticationServiceTest {
     private UserInfoService userInfoService;
 
     @Mock
+    private UserInfoMapper userInfoMapper;
+
+    @Mock
     private AuthenticationManager authenticationManager;
 
     @InjectMocks
@@ -42,7 +51,7 @@ class AuthenticationServiceTest {
 
         @Test
         void shouldRegisterUserSuccessfully() {
-            UserInfo newUser = new UserInfo();
+            UserInfoRequestDTO newUser = new UserInfoRequestDTO();
             newUser.setUsername("john");
             newUser.setPassword("password");
             newUser.setEmail("example@gmail.com");
@@ -50,9 +59,9 @@ class AuthenticationServiceTest {
             when(userInfoService.userExists("john")).thenReturn(false);
             when(userInfoRepository.save(any(UserInfo.class))).thenAnswer(inv -> inv.getArgument(0));
 
-            UserInfo registered = authService.register(newUser);
+            UserInfo registered = userInfoMapper.toUserInfo(newUser);
 
-            assertNotNull(registered);
+            assertNotNull(newUser);
             assertEquals(1, registered.getRoles().size());
             assertTrue(registered.getRoles().contains(Role.USER));
             assertNotEquals("password", registered.getPassword());
@@ -62,7 +71,7 @@ class AuthenticationServiceTest {
 
         @Test
         void shouldThrowWhenUserAlreadyExists() {
-            UserInfo newUser = new UserInfo();
+            UserInfoRequestDTO newUser = new UserInfoRequestDTO();
             newUser.setUsername("existing");
 
             when(userInfoService.userExists("existing")).thenReturn(true);
@@ -79,10 +88,9 @@ class AuthenticationServiceTest {
 
         @Test
         void shouldAuthenticateAndReturnToken() {
-            UserInfo loginUser = new UserInfo();
+            UserAuthenticationDTO loginUser = new UserAuthenticationDTO();
             loginUser.setUsername("john");
             loginUser.setPassword("password");
-            loginUser.setEmail("example@gmail.com");
 
             Authentication auth = mock(Authentication.class);
             when(authenticationManager.authenticate(any())).thenReturn(auth);
@@ -101,7 +109,7 @@ class AuthenticationServiceTest {
 
         @Test
         void shouldReturnUnauthenticatedMessage() {
-            UserInfo user = new UserInfo();
+            UserAuthenticationDTO user = new UserAuthenticationDTO();
             user.setUsername("john");
             user.setPassword("wrong");
 
@@ -116,7 +124,7 @@ class AuthenticationServiceTest {
 
         @Test
         void shouldThrowIfUserNotFoundAfterAuthentication() {
-            UserInfo user = new UserInfo();
+            UserAuthenticationDTO user = new UserAuthenticationDTO();
             user.setUsername("missing");
             user.setPassword("secret");
 

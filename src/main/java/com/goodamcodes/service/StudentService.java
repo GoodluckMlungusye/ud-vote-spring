@@ -63,6 +63,6 @@ public class StudentService {
         );
         fileService.deleteFile(student.getImageUrl());
         studentRepository.deleteById(studentId);
-        return "Student with registration number: " + student.getRegistrationNumber() + " has been deleted";
+        return "Student with registration number " + student.getRegistrationNumber() + " has been deleted";
     }
 }

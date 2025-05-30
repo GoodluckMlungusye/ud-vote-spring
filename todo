@@ -1,12 +1,12 @@
 1.Authentication
  -users crud (default user role)
  -students crud (default voter role)
+ -colleges crud
  -session token (username + password)
  -OTP (Reg.No --> email)
 
 2.Voting session I
  -categories crud (add general/non-general category flag)
- -colleges crud
  -contestants crud
 
 3.Voting session II

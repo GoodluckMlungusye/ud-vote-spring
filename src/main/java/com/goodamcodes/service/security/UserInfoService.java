@@ -3,6 +3,7 @@ import com.goodamcodes.dto.security.ConfirmPasswordResetDTO;
 import com.goodamcodes.dto.security.EmailRequestDTO;
 import com.goodamcodes.dto.security.UserInfoRequestDTO;
 import com.goodamcodes.dto.security.UserInfoResponseDTO;
+import com.goodamcodes.enums.Role;
 import com.goodamcodes.mapper.UserInfoMapper;
 import com.goodamcodes.model.security.PasswordResetCode;
 import com.goodamcodes.model.security.UserInfo;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -107,6 +109,16 @@ public class UserInfoService implements UserDetailsService {
         UserInfo userInfo = userInfoRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return userInfo.getEmail();
+    }
+
+    public void addNewRoleToUser(UserInfo user, Role role) {
+        if (user.getRoles() == null) {
+            user.setRoles(new ArrayList<>());
+        }
+        if (!user.getRoles().contains(role)) {
+            user.getRoles().add(role);
+        }
+        userInfoRepository.save(user);
     }
 
 }

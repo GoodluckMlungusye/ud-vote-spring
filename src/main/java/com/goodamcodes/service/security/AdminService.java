@@ -19,21 +19,48 @@ public class AdminService {
     private final UserInfoRepository repository;
 
     public String assignRole(RoleUpdateRequestDTO request) {
-        UserInfo user = repository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
+        UserInfo user = getUserByUsername(request.getUsername());
         Set<Role> roles = new HashSet<>(user.getRoles());
 
-        Role newRole = Role.valueOf(request.getRole().toUpperCase());
+        Role newRole = toRoleEnum(request.getRole());
         if (roles.contains(newRole)) {
             return "User already has this role.";
         }
-        roles.add(newRole);
 
-        user.setRoles(new ArrayList<>(roles));
-        repository.save(user);
+        roles.add(newRole);
+        saveRoles(user, roles);
 
         return "Role assigned successfully.";
+    }
+
+//    public String unassignRole(RoleUpdateRequestDTO request) {
+//        UserInfo user = getUserByUsername(request.getUsername());
+//        Set<Role> roles = new HashSet<>(user.getRoles());
+//
+//        Role roleToRemove = toRoleEnum(request.getRole());
+//        if (!roles.contains(roleToRemove)) {
+//            return "User does not have this role.";
+//        }
+//
+//        roles.remove(roleToRemove);
+//        saveRoles(user, roles);
+//
+//        return "Role unassigned successfully.";
+//    }
+
+
+    private UserInfo getUserByUsername(String username) {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    private Role toRoleEnum(String roleName) {
+        return Role.valueOf(roleName.toUpperCase());
+    }
+
+    private void saveRoles(UserInfo user, Set<Role> roles) {
+        user.setRoles(new ArrayList<>(roles));
+        repository.save(user);
     }
 
 }

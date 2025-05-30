@@ -2,8 +2,10 @@ package com.goodamcodes.service;
 
 import com.goodamcodes.dto.ContestantDTO;
 import com.goodamcodes.mapper.ContestantMapper;
+import com.goodamcodes.model.Category;
 import com.goodamcodes.model.Contestant;
 import com.goodamcodes.model.Student;
+import com.goodamcodes.repository.CategoryRepository;
 import com.goodamcodes.repository.ContestantRepository;
 import com.goodamcodes.repository.StudentRepository;
 import com.goodamcodes.service.utility.FileService;
@@ -20,22 +22,30 @@ public class ContestantService {
 
     private final ContestantRepository contestantRepository;
     private final StudentRepository studentRepository;
+    private final CategoryRepository categoryRepository;
     private final ContestantMapper contestantMapper;
     private final FileService fileService;
 
     public String addContestant(ContestantDTO contestantDTO, MultipartFile file) {
-        Student contestant = studentRepository.findById(contestantDTO.getStudentId()).orElseThrow(()-> new IllegalArgumentException("Contestant not found"));
-        Optional<Contestant> existingContestant = contestantRepository.findByStudent(contestant);
+
+        Student student = studentRepository.findById(contestantDTO.getStudentId()).orElseThrow(()-> new IllegalArgumentException("Student not found"));
+        Category category = categoryRepository.findById(contestantDTO.getCategoryId()).orElseThrow(()-> new IllegalArgumentException("Category not found"));
+
+        Optional<Contestant> existingContestant = contestantRepository.findByStudent(student);
         if (existingContestant.isPresent()) {
             throw new IllegalStateException("Contestant already exists");
         }
-        Contestant newContestant = contestantMapper.toContestant(contestantDTO);
+
+        Contestant contestant = contestantMapper.toContestant(contestantDTO);
+        contestant.setStudent(student);
+        contestant.setCategory(category);
 
         if(file != null && !file.isEmpty()) {
             String fileName = fileService.saveFile(file);
-            newContestant.setVideoUrl(fileName);
+            contestant.setVideoUrl(fileName);
         }
-        Contestant savedContestant = contestantRepository.save(newContestant);
+
+        Contestant savedContestant = contestantRepository.save(contestant);
         return "Contestant " + savedContestant.getStudent().getUser().getFirstName() + " " + savedContestant.getStudent().getUser().getLastName() + " has been added successfully";
     }
 
@@ -55,6 +65,20 @@ public class ContestantService {
             fileService.deleteFile(existingContestant.getVideoUrl());
             String fileName = fileService.saveFile(file);
             existingContestant.setVideoUrl(fileName);
+        }
+
+        if(contestantDTO.getStudentId() != null && !contestantDTO.getStudentId().equals(existingContestant.getStudent().getId())) {
+            Student newStudent = studentRepository.findById(contestantDTO.getStudentId()).orElseThrow(
+                    () -> new IllegalStateException("Student does not exist")
+            );
+            existingContestant.setStudent(newStudent);
+        }
+
+        if(contestantDTO.getCategoryId() != null && !contestantDTO.getCategoryId().equals(existingContestant.getCategory().getId())) {
+            Category newCategory = categoryRepository.findById(contestantDTO.getCategoryId()).orElseThrow(
+                    () -> new IllegalStateException("Category does not exist")
+            );
+            existingContestant.setCategory(newCategory);
         }
 
         Contestant updatedContestant = contestantRepository.save(existingContestant);

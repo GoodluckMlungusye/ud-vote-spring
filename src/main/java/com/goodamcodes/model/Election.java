@@ -25,6 +25,7 @@ public class Election {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;

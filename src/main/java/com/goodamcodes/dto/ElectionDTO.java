@@ -12,6 +12,7 @@ import java.util.List;
 public class ElectionDTO {
 
     private Long id;
+    private String name;
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;

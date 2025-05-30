@@ -13,6 +13,8 @@ public interface RegistrationYearMapper {
     @Mapping(target = "votedStudents", ignore = true)
     RegistrationYear toRegistrationYear(RegistrationYearDTO registrationYearDTO);
 
+    @Mapping(target = "registeredStudents", source = "registeredStudents")
+    @Mapping(target = "votedStudents", source = "votedStudents")
     RegistrationYearDTO toRegistrationYearDTO(RegistrationYear registrationYear);
 
     List<RegistrationYearDTO> toRegistrationYearDTOs(List<RegistrationYear> registrationYears);

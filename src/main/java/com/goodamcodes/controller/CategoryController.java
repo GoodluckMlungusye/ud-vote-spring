@@ -17,8 +17,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<String> addCategory(@RequestPart("category") CategoryDTO categoryDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.addCategory(categoryDTO));
+    public ResponseEntity<String> addCategory(@RequestBody CategoryDTO category){
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.addCategory(category));
     }
 
     @GetMapping
@@ -27,8 +27,8 @@ public class CategoryController {
     }
 
     @PatchMapping(path = "/{categoryId}")
-    public ResponseEntity<String> updateCategory(@PathVariable("categoryId") Long categoryId, @RequestPart("category") CategoryDTO categoryDTO){
-        return ResponseEntity.status(HttpStatus.OK).body(categoryService.updateCategory(categoryId, categoryDTO));
+    public ResponseEntity<String> updateCategory(@PathVariable("categoryId") Long categoryId, @RequestBody CategoryDTO category){
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.updateCategory(categoryId, category));
     }
 
     @DeleteMapping(path = "/{categoryId}")

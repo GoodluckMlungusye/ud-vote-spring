@@ -11,7 +11,7 @@ public class StudentDTO {
     private Long userId;
     private Long collegeId;
     private String registrationNumber;
-    private int registrationYear;
+    private int electionYear;
     private String imageUrl;
 
 }

@@ -27,7 +27,7 @@ public class Student {
 
     private String registrationNumber;
 
-    private int registrationYear;
+    private int electionYear;
 
     private String imageUrl;
 }

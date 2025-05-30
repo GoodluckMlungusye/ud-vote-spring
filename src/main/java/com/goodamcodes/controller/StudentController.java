@@ -1,6 +1,7 @@
 package com.goodamcodes.controller;
 
 import com.goodamcodes.dto.StudentDTO;
+import com.goodamcodes.dto.security.*;
 import com.goodamcodes.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,16 @@ public class StudentController {
     @DeleteMapping(path = "/{studentId}")
     public ResponseEntity<String> deleteStudent(@PathVariable("studentId") Long studentId){
         return ResponseEntity.status(HttpStatus.OK).body(studentService.deleteStudent(studentId));
+    }
+
+    @PostMapping("/otp")
+    public ResponseEntity<String> requestOTP(@RequestBody OTPRequestDTO otp) {
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.requestOTP(otp));
+    }
+
+    @PatchMapping("/access")
+    public ResponseEntity<String> getVotingAccess(@RequestBody ConfirmOTPCodeDTO request) {
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.getVotingAccess(request));
     }
 
 }

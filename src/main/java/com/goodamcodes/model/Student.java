@@ -1,5 +1,6 @@
 package com.goodamcodes.model;
 
+import com.goodamcodes.model.security.OTP;
 import com.goodamcodes.model.security.UserInfo;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,4 +31,7 @@ public class Student {
     private int electionYear;
 
     private String imageUrl;
+
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+    private OTP otpResetCode;
 }

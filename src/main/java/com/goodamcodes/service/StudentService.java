@@ -1,20 +1,27 @@
 package com.goodamcodes.service;
 
 import com.goodamcodes.dto.StudentDTO;
+import com.goodamcodes.dto.security.ConfirmOTPCodeDTO;
+import com.goodamcodes.dto.security.OTPRequestDTO;
 import com.goodamcodes.enums.Role;
 import com.goodamcodes.mapper.StudentMapper;
 import com.goodamcodes.model.College;
 import com.goodamcodes.model.Student;
+import com.goodamcodes.model.security.OTP;
 import com.goodamcodes.model.security.UserInfo;
 import com.goodamcodes.repository.CollegeRepository;
 import com.goodamcodes.repository.StudentRepository;
+import com.goodamcodes.repository.security.OTPRepository;
 import com.goodamcodes.repository.security.UserInfoRepository;
 import com.goodamcodes.service.security.UserInfoService;
+import com.goodamcodes.service.utility.EmailService;
 import com.goodamcodes.service.utility.FileService;
+import com.goodamcodes.service.utility.OTPService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +35,9 @@ public class StudentService {
     private final UserInfoService userInfoService;
     private final StudentMapper studentMapper;
     private final FileService fileService;
+    private final OTPService otpService;
+    private final EmailService emailService;
+    private final OTPRepository otpRepository;
 
     public String registerStudent(StudentDTO studentDTO, MultipartFile file) {
         Optional<Student> existingStudent = studentRepository.findByRegistrationNumber(studentDTO.getRegistrationNumber());
@@ -99,5 +109,48 @@ public class StudentService {
         fileService.deleteFile(student.getImageUrl());
         studentRepository.deleteById(studentId);
         return "Student with registration number " + student.getRegistrationNumber() + " has been deleted";
+    }
+
+    public String requestOTP(OTPRequestDTO otpRequestDTO) {
+
+        Optional<Student> student = studentRepository.findByRegistrationNumber(otpRequestDTO.getRegistrationNumber());
+        if (student.isEmpty()) {
+            throw new IllegalStateException("This student was not registered");
+        }
+
+        String otp = otpService.createOTP();
+        LocalDateTime expiry = LocalDateTime.now().plusMinutes(10);
+
+        Student voter = student.get();
+        otpService.saveOTP(otp,voter,expiry);
+
+        emailService.sendEmail(
+                voter.getUser().getEmail(),
+                "Voting code",
+                otp
+        );
+
+        return "Voting code sent to " + voter.getUser().getEmail();
+    }
+
+    public String getVotingAccess(ConfirmOTPCodeDTO confirmOTPCodeDTO) {
+
+        Optional<OTP> otp = otpRepository.findByOtp(confirmOTPCodeDTO.getOtp());
+        if (otp.isEmpty()) {
+            throw new IllegalArgumentException("Voting code not found");
+        }
+
+        OTP votingCodeInstance =  otp.get();
+
+        if (!votingCodeInstance.getOtp().equals(confirmOTPCodeDTO.getOtp())) {
+            throw new IllegalArgumentException("Invalid code.");
+        }
+
+        if (votingCodeInstance.getExpiryDate().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Code expired.");
+        }
+
+        otpService.deleteByStudent(votingCodeInstance.getStudent());
+        return "Voting access granted";
     }
 }

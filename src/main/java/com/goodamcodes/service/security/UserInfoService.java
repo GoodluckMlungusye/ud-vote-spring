@@ -10,6 +10,7 @@ import com.goodamcodes.model.security.UserInfo;
 import com.goodamcodes.repository.security.PasswordResetCodeRepository;
 import com.goodamcodes.repository.security.UserInfoRepository;
 import com.goodamcodes.service.utility.EmailService;
+import com.goodamcodes.service.utility.OTPService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +31,7 @@ public class UserInfoService implements UserDetailsService {
     private final PasswordResetCodeService  passwordResetCodeService;
     private final PasswordResetCodeRepository passwordResetCodeRepository;
     private final EmailService emailService;
+    private final OTPService otpService;
     private final UserInfoMapper userInfoMapper;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
@@ -44,7 +45,7 @@ public class UserInfoService implements UserDetailsService {
         UserInfo user = userInfoRepository.findByEmail(emailRequestDTO.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        String code = String.format("%06d", new Random().nextInt(999999));
+        String code = otpService.createOTP();
         LocalDateTime expiry = LocalDateTime.now().plusMinutes(10);
 
         passwordResetCodeService.savePasswordResetCode(code,user,expiry);

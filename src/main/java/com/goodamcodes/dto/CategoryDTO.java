@@ -11,5 +11,6 @@ public class CategoryDTO {
     private Long electionId;
     private String name;
     private String abbreviation;
+    private boolean isGeneral;
 
 }

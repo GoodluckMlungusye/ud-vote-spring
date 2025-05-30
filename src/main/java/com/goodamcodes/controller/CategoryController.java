@@ -1,4 +1,38 @@
 package com.goodamcodes.controller;
 
+import com.goodamcodes.dto.CategoryDTO;
+import com.goodamcodes.service.CategoryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/public/category")
+@RequiredArgsConstructor
 public class CategoryController {
+
+    private final CategoryService categoryService;
+
+    @PostMapping
+    public ResponseEntity<String> addCategory(@RequestPart("category") CategoryDTO categoryDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.addCategory(categoryDTO));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoryDTO>> fetchAllCategories(){
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.fetchAllCategories());
+    }
+
+    @PatchMapping(path = "/{categoryId}")
+    public ResponseEntity<String> updateCategory(@PathVariable("categoryId") Long categoryId, @RequestPart("category") CategoryDTO categoryDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.updateCategory(categoryId, categoryDTO));
+    }
+
+    @DeleteMapping(path = "/{categoryId}")
+    public ResponseEntity<String> deleteCategory(@PathVariable("categoryId") Long categoryId){
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.deleteCategory(categoryId));
+    }
 }

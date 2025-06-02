@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/election")
+@RequestMapping("/api/election")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ELECTION_MANAGER')")
 public class ElectionController {

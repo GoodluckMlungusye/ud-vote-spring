@@ -19,7 +19,6 @@ public interface VoteMapper {
     @Mapping(target = "categoryId", source = "category.id")
     @Mapping(target = "voterId", source = "voter.id")
     @Mapping(target = "electionId", source = "election.id")
-    @Mapping(target = "castAt", source = "castAt")
     VoteDTO toVoteDTO(Vote vote);
 
     List<VoteDTO> toVoteDTOs(List<Vote> votes);

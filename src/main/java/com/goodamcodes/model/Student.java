@@ -1,5 +1,6 @@
 package com.goodamcodes.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.goodamcodes.model.security.OTP;
 import com.goodamcodes.model.security.UserInfo;
 import jakarta.persistence.*;
@@ -24,6 +25,7 @@ public class Student {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "college_id")
+    @JsonBackReference
     private College college;
 
     private String registrationNumber;
@@ -33,5 +35,5 @@ public class Student {
     private String imageUrl;
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
-    private OTP otpResetCode;
+    private OTP otpCode;
 }

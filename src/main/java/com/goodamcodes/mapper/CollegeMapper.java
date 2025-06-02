@@ -9,7 +9,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = StudentMapper.class)
 public interface CollegeMapper {
 
     College toCollege(CollegeDTO collegeDTO);

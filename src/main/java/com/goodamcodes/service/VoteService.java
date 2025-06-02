@@ -87,7 +87,7 @@ public class VoteService {
         Category contestantCategory = contestant.getCategory();
         boolean hasValidCategory =  contestantCategory.equals(category);
 
-        if (hasValidCategory && !category.isGeneral()) {
+        if (hasValidCategory && !category.getIsGeneral()) {
             College voterCollege = voter.getCollege();
             College contestantCollege = contestant.getStudent().getCollege();
             if (!voterCollege.equals(contestantCollege)) {

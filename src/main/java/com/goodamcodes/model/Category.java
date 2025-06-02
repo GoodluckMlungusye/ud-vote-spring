@@ -27,7 +27,7 @@ public class Category {
     @Column(unique=true)
     private String abbreviation;
 
-    private boolean isGeneral;
+    private Boolean isGeneral;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "election_id")

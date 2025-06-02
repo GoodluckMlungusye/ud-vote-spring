@@ -1,6 +1,6 @@
 package com.goodamcodes.dto;
 
-import com.goodamcodes.model.Student;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +13,7 @@ public class CollegeDTO {
     private Long id;
     private String name;
     private String imageUrl;
+    @JsonIgnore
     private List<StudentDTO> students;
 
 }

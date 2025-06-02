@@ -30,7 +30,7 @@ public class Student {
 
     private String registrationNumber;
 
-    private int electionYear;
+    private Integer electionYear;
 
     private String imageUrl;
 

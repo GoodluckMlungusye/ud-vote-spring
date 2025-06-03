@@ -7,10 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-
 @Service
 @RequiredArgsConstructor
 public class VoteService {
@@ -42,11 +39,9 @@ public class VoteService {
 
         checkForGeneralCategory(contestant, category, voter);
 
-        boolean hasVoted = voteRepository
-                .existsByVoterAndCategoryAndElection(voter, category, election);
-        if (hasVoted) {
-            throw new IllegalArgumentException("Voter has already voted in this category");
-        }
+        checkForValidContestant(contestantRepository, category, voteDTO);
+
+        checkForDuplicateVotes(voter, category, election);
 
         Vote vote = Vote.builder()
                 .voter(voter)
@@ -70,7 +65,11 @@ public class VoteService {
     }
 
     private void checkVoterEligibilityByYear(Election election, Student voter) {
-        int electionYear = LocalDateTime.ofInstant(Instant.from(election.getStartTime()), ZoneId.systemDefault())
+        if (election.getDate() == null || election.getStartTime() == null) {
+            throw new IllegalStateException("Election date or start time is missing");
+        }
+
+        int electionYear = LocalDateTime.of(election.getDate(), election.getStartTime())
                 .getYear();
 
         if (voter.getElectionYear() != electionYear) {
@@ -90,12 +89,27 @@ public class VoteService {
             College contestantCollege = contestant.getStudent().getCollege();
             if (!voterCollege.equals(contestantCollege)) {
                 throw new IllegalArgumentException(
-                        "Voter’s college (" + voterCollege.getName() +
-                                ") is not eligible to vote for this category; " +
-                                "only students from " + contestantCollege.getName() +
-                                " may vote for \"" + category.getName() + "\"."
+                        "This election is specific for " + contestantCollege.getName().toUpperCase() + " students."
                 );
             }
+        }
+    }
+
+    private void checkForValidContestant(ContestantRepository contestantRepository, Category category, VoteDTO voteDTO) {
+        boolean contestantExists = contestantRepository.existsByIdAndCategory(
+                voteDTO.getContestantId(),
+                category
+        );
+        if(!contestantExists) {
+            throw new IllegalArgumentException("The contestant you are trying to vote for does not belong to this category");
+        }
+    }
+
+    private void checkForDuplicateVotes(Student voter, Category category, Election election) {
+        boolean hasVoted = voteRepository
+                .existsByVoterAndCategoryAndElection(voter, category, election);
+        if (hasVoted) {
+            throw new IllegalArgumentException("Voter has already voted in this category");
         }
     }
 

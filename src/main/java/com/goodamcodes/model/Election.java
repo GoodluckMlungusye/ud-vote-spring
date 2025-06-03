@@ -38,15 +38,15 @@ public class Election {
     private Instant updatedAt;
 
     public Instant getStartInstant() {
-        return date.atTime(startTime)
-                .atZone(ZoneId.systemDefault())
-                .toInstant();
+        LocalDateTime startDateTime = LocalDateTime.of(date, startTime);
+        ZonedDateTime zonedStart = startDateTime.atZone(ZoneId.systemDefault());
+        return zonedStart.toInstant();
     }
 
     public Instant getEndInstant() {
-        return date.atTime(endTime)
-                .atZone(ZoneId.systemDefault())
-                .toInstant();
+        LocalDateTime endDateTime = LocalDateTime.of(date, endTime);
+        ZonedDateTime zonedEnd = endDateTime.atZone(ZoneId.systemDefault());
+        return zonedEnd.toInstant();
     }
 
     public boolean hasStarted() {

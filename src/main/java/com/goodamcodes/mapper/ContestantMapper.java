@@ -18,7 +18,6 @@ public interface ContestantMapper {
     ContestantDTO toContestantDTO(Contestant contestant);
 
     List<ContestantDTO> toContestantDTOs(List<Contestant> contestants);
-    List<Contestant> toContestants(List<ContestantDTO> contestantDTOS);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateContestantFromDTO(ContestantDTO contestantDTO, @MappingTarget Contestant contestant);

@@ -15,7 +15,6 @@ public interface ElectionMapper {
     Election toElection(ElectionDTO electionDTO);
     ElectionDTO toElectionDTO(Election election);
     List<ElectionDTO> toElectionDTOs(List<Election> elections);
-    List<Election> toElections(List<ElectionDTO> electionDTOS);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateElectionFromDTO(ElectionDTO electionDTO, @MappingTarget Election election);

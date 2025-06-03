@@ -21,9 +21,4 @@ public interface VoteMapper {
     @Mapping(target = "electionId", source = "election.id")
     VoteDTO toVoteDTO(Vote vote);
 
-    List<VoteDTO> toVoteDTOs(List<Vote> votes);
-    List<Vote> toVotes(List<VoteDTO> voteDTOS);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateVoteFromDTO(VoteDTO voteDTO, @MappingTarget Vote vote);
 }

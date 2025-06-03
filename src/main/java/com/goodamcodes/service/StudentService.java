@@ -70,6 +70,16 @@ public class StudentService {
         return studentMapper.toStudentDTOs(students);
     }
 
+    public List<StudentDTO> getStudentsByCollegeAndYear(Long collegeId, Integer electionYear) {
+        List<Student> students = studentRepository.findAllByCollegeIdAndElectionYear(collegeId, electionYear);
+        return studentMapper.toStudentDTOs(students);
+    }
+
+    public List<StudentDTO> getStudentsWhoVotedByCollegeAndYear(Long collegeId, Integer electionYear) {
+        List<Student> students = studentRepository.findVotedStudentsByCollegeAndYear(collegeId, electionYear);
+        return studentMapper.toStudentDTOs(students);
+    }
+
     public String updateStudent(Long studentId, StudentDTO studentDTO, MultipartFile file){
         Student existingStudent = studentRepository.findById(studentId).orElseThrow(
                 () -> new IllegalStateException("Student " +  studentDTO.getRegistrationNumber() + " was not found")

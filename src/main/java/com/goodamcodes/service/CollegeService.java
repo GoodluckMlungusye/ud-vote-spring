@@ -19,6 +19,7 @@ public class CollegeService {
     private final CollegeRepository collegeRepository;
     private final CollegeMapper collegeMapper;
     private final FileService fileService;
+    private final StudentService studentService;
 
     public String addCollege(CollegeDTO collegeDTO, MultipartFile file) {
         Optional<College> existingCollege = collegeRepository.findByName(collegeDTO.getName());
@@ -64,6 +65,13 @@ public class CollegeService {
         fileService.deleteFile(college.getImageUrl());
         collegeRepository.deleteById(collegeId);
         return "College " + college.getName() + " has been deleted";
+    }
+
+    public double getCollegeParticipationRatingPerYear(Long collegeId, Integer year) {
+        int registeredStudents = studentService.getStudentsByCollegeAndYear(collegeId,year).size();
+        int votedStudents = studentService.getStudentsWhoVotedByCollegeAndYear(collegeId,year).size();
+        if (registeredStudents == 0) return 0.0;
+        return (votedStudents * 100.0) / registeredStudents;
     }
 
 }

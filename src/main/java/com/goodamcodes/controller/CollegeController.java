@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/public/college")
+@RequestMapping("/api/admin/college")
 @RequiredArgsConstructor
 public class CollegeController {
 
@@ -25,6 +25,11 @@ public class CollegeController {
     @GetMapping
     public ResponseEntity<List<CollegeDTO>> fetchAllColleges(){
         return ResponseEntity.status(HttpStatus.OK).body(collegeService.fetchAllColleges());
+    }
+
+    @GetMapping(path = "/rating/{collegeId}/{year}")
+    public ResponseEntity<Double> getCollegeParticipationRating(@PathVariable("collegeId") Long collegeId, @PathVariable("year") Integer year){
+        return ResponseEntity.status(HttpStatus.OK).body(collegeService.getCollegeParticipationRatingPerYear(collegeId, year));
     }
 
     @PatchMapping(path = "/{collegeId}")

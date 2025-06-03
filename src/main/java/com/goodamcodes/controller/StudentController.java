@@ -28,6 +28,16 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudents());
     }
 
+    @GetMapping("/{collegeId}/{year}")
+    public ResponseEntity<List<StudentDTO>> getStudentsByCollegeAndYear(@PathVariable("collegeId") Long collegeId, @PathVariable("year") Integer year){
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudentsByCollegeAndYear(collegeId, year));
+    }
+
+    @GetMapping("/voted/{collegeId}/{year}")
+    public ResponseEntity<List<StudentDTO>> getStudentsWhoVotedByCollegeAndYear(@PathVariable("collegeId") Long collegeId, @PathVariable("year") Integer year){
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudentsWhoVotedByCollegeAndYear(collegeId, year));
+    }
+
     @PatchMapping(path = "/{studentId}")
     public ResponseEntity<String> updateStudent(@PathVariable("studentId") Long studentId, @RequestPart("student") StudentDTO studentDTO, @RequestPart("file") MultipartFile file){
         return ResponseEntity.status(HttpStatus.OK).body(studentService.updateStudent(studentId, studentDTO, file));

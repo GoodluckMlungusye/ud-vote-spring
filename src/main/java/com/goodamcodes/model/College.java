@@ -1,6 +1,5 @@
 package com.goodamcodes.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,4 +24,5 @@ public class College {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "college")
     @JsonManagedReference
     private List<Student> students;
+    private Integer electionYear;
 }

@@ -66,7 +66,7 @@ public class VoteService {
 
     private void checkVoterEligibilityByYear(Election election, Student voter) {
         if (election.getDate() == null || election.getStartTime() == null) {
-            throw new IllegalStateException("Election date or start time is missing");
+            throw new IllegalArgumentException("Election date or start time is missing");
         }
 
         int electionYear = LocalDateTime.of(election.getDate(), election.getStartTime())

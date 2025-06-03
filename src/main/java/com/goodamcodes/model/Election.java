@@ -6,10 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
+import java.time.*;
 import java.util.List;
 
 @Entity
@@ -39,4 +36,25 @@ public class Election {
 
     @UpdateTimestamp
     private Instant updatedAt;
+
+    public Instant getStartInstant() {
+        return date.atTime(startTime)
+                .atZone(ZoneId.systemDefault())
+                .toInstant();
+    }
+
+    public Instant getEndInstant() {
+        return date.atTime(endTime)
+                .atZone(ZoneId.systemDefault())
+                .toInstant();
+    }
+
+    public boolean hasStarted() {
+        return Instant.now().isAfter(getStartInstant());
+    }
+
+    public boolean hasEnded() {
+        return Instant.now().isAfter(getEndInstant());
+    }
+
 }

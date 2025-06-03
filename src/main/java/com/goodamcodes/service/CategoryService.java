@@ -3,7 +3,9 @@ package com.goodamcodes.service;
 import com.goodamcodes.dto.CategoryDTO;
 import com.goodamcodes.mapper.CategoryMapper;
 import com.goodamcodes.model.Category;
+import com.goodamcodes.model.Election;
 import com.goodamcodes.repository.CategoryRepository;
+import com.goodamcodes.repository.ElectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ElectionRepository electionRepository;
     private final CategoryMapper categoryMapper;
 
     public String addCategory(CategoryDTO categoryDTO) {
@@ -24,6 +27,11 @@ public class CategoryService {
         }
 
         Category category = categoryMapper.toCategory(categoryDTO);
+
+        Election election = electionRepository.findById(categoryDTO.getElectionId())
+                .orElseThrow(() -> new IllegalStateException("Election not found"));
+
+        category.setElection(election);
 
         Category savedCategory = categoryRepository.save(category);
         return "Category " + savedCategory.getName() + " has been added successfully";

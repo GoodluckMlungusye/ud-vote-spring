@@ -37,7 +37,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/election/**").hasRole("ELECTION_MANAGER")
-                        .requestMatchers("/api/user/**").hasAnyRole("USER,VOTER")
+                        .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN", "VOTER")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

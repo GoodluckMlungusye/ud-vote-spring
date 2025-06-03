@@ -45,7 +45,7 @@ public class VoteService {
         boolean hasVoted = voteRepository
                 .existsByVoterAndCategoryAndElection(voter, category, election);
         if (hasVoted) {
-            throw new IllegalStateException("Voter has already voted in this category");
+            throw new IllegalArgumentException("Voter has already voted in this category");
         }
 
         Vote vote = Vote.builder()
@@ -61,13 +61,11 @@ public class VoteService {
     }
 
     private void checkElectionWindow(Election election) {
-        Instant now = Instant.now();
-
-        if (now.isBefore(Instant.from(election.getStartTime()))) {
-            throw new IllegalStateException("The election has not started yet");
+        if (!election.hasStarted()) {
+            throw new IllegalArgumentException("The election has not started yet");
         }
-        if (now.isAfter(Instant.from(election.getEndTime()))) {
-            throw new IllegalStateException("The election has already ended");
+        if (election.hasEnded()) {
+            throw new IllegalArgumentException("The election has already ended");
         }
     }
 
@@ -76,7 +74,7 @@ public class VoteService {
                 .getYear();
 
         if (voter.getElectionYear() != electionYear) {
-            throw new IllegalStateException(
+            throw new IllegalArgumentException(
                     "Voter is not eligible: registration year " +
                             voter.getElectionYear() + " does not match election year " + electionYear
             );
@@ -91,7 +89,7 @@ public class VoteService {
             College voterCollege = voter.getCollege();
             College contestantCollege = contestant.getStudent().getCollege();
             if (!voterCollege.equals(contestantCollege)) {
-                throw new IllegalStateException(
+                throw new IllegalArgumentException(
                         "Voter’s college (" + voterCollege.getName() +
                                 ") is not eligible to vote for this category; " +
                                 "only students from " + contestantCollege.getName() +

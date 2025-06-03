@@ -14,6 +14,5 @@ public class VoteDTO {
     private Long categoryId;
     private Long voterId;
     private Long electionId;
-    private Instant castAt;
 
 }

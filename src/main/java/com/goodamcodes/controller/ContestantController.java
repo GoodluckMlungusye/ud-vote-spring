@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/public/contestant")
+@RequestMapping("/api/election/contestant")
 @RequiredArgsConstructor
 public class ContestantController {
 

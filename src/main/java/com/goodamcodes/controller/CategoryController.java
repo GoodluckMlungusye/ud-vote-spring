@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/public/category")
+@RequestMapping("/api/election/category")
 @RequiredArgsConstructor
 public class CategoryController {
 

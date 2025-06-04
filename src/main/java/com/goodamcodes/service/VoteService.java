@@ -113,4 +113,19 @@ public class VoteService {
         }
     }
 
+    public int countVotesInCategory(Long categoryId) {
+        return voteRepository.findAllByCategoryId(categoryId).size();
+    }
+
+    public int countContestantVotesInCategory(Long contestantId, Long categoryId) {
+        return voteRepository.findAllByContestantIdAndCategoryId(contestantId,categoryId).size();
+    }
+
+    public double getContestantVotePercent(Long contestantId, Long categoryId) {
+        int totalVotes = countVotesInCategory(categoryId);
+        int contestantVotes = countContestantVotesInCategory(contestantId, categoryId);
+        if(totalVotes ==  0) return 0.0;
+        return (contestantVotes * 100.0) / totalVotes;
+    }
+
 }

@@ -7,7 +7,10 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "colleges")
+@Table(
+        name = "colleges",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name", "election_year"})
+    )
 @Getter
 @Setter
 @NoArgsConstructor

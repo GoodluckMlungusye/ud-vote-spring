@@ -22,7 +22,7 @@ public class CollegeService {
     private final StudentService studentService;
 
     public String addCollege(CollegeDTO collegeDTO, MultipartFile file) {
-        Optional<College> existingCollege = collegeRepository.findByName(collegeDTO.getName());
+        Optional<College> existingCollege = collegeRepository.findByNameAndElectionYear(collegeDTO.getName(),  collegeDTO.getElectionYear());
         if (existingCollege.isPresent()) {
             throw new IllegalStateException("College already exists");
         }

@@ -28,7 +28,7 @@ public class CollegeController {
     }
 
     @GetMapping(path = "/rating/{collegeId}/{year}")
-    public ResponseEntity<Double> getCollegeParticipationRating(@PathVariable("collegeId") Long collegeId, @PathVariable("year") Integer year){
+    public ResponseEntity<String> getCollegeParticipationRating(@PathVariable("collegeId") Long collegeId, @PathVariable("year") Integer year){
         return ResponseEntity.status(HttpStatus.OK).body(collegeService.getCollegeParticipationRatingPerYear(collegeId, year));
     }
 

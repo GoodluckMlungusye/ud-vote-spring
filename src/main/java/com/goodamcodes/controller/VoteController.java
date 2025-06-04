@@ -32,7 +32,7 @@ public class VoteController {
     }
 
     @GetMapping("/vote-percent/contestant/{contestantId}/category/{categoryId}")
-    public ResponseEntity<Double> getContestantVotePercent(@PathVariable("contestantId") Long contestantId, @PathVariable("categoryId") Long categoryId){
+    public ResponseEntity<String> getContestantVotePercent(@PathVariable("contestantId") Long contestantId, @PathVariable("categoryId") Long categoryId){
         return ResponseEntity.status(HttpStatus.CREATED).body(voteService.getContestantVotePercent(contestantId,categoryId));
     }
 }

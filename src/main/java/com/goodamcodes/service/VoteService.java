@@ -121,11 +121,12 @@ public class VoteService {
         return voteRepository.findAllByContestantIdAndCategoryId(contestantId,categoryId).size();
     }
 
-    public double getContestantVotePercent(Long contestantId, Long categoryId) {
+    public String getContestantVotePercent(Long contestantId, Long categoryId) {
         int totalVotes = countVotesInCategory(categoryId);
         int contestantVotes = countContestantVotesInCategory(contestantId, categoryId);
-        if(totalVotes ==  0) return 0.0;
-        return (contestantVotes * 100.0) / totalVotes;
+        if (totalVotes == 0) return "0.00%";
+        double percentage = (contestantVotes * 100.0) / totalVotes;
+        return String.format("%.2f%%", percentage);
     }
 
 }

@@ -67,11 +67,12 @@ public class CollegeService {
         return "College " + college.getName() + " has been deleted";
     }
 
-    public double getCollegeParticipationRatingPerYear(Long collegeId, Integer year) {
+    public String getCollegeParticipationRatingPerYear(Long collegeId, Integer year) {
         int registeredStudents = studentService.getStudentsByCollegeAndYear(collegeId,year).size();
         int votedStudents = studentService.getStudentsWhoVotedByCollegeAndYear(collegeId,year).size();
-        if (registeredStudents == 0) return 0.0;
-        return (votedStudents * 100.0) / registeredStudents;
+        if (registeredStudents == 0) return "0.00%";
+        double percentage = (votedStudents * 100.0) /registeredStudents;
+        return String.format("%.2f%%", percentage);
     }
 
 }

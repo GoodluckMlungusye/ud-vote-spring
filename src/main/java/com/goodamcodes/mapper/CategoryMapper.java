@@ -11,7 +11,6 @@ public interface CategoryMapper {
     @Mapping(target = "election", ignore = true)
     Category toCategory(CategoryDTO categoryDTO);
     @Mapping(target = "electionId", source = "election.id")
-    CategoryDTO toCategoryDTO(Category category);
     List<CategoryDTO> toCategoryDTOs(List<Category> categories);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

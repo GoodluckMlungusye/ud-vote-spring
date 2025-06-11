@@ -1,5 +1,6 @@
 package com.goodamcodes.service.security;
 
+import com.goodamcodes.dto.security.TokenResponseDTO;
 import com.goodamcodes.dto.security.UserAuthenticationDTO;
 import com.goodamcodes.dto.security.UserInfoRequestDTO;
 import com.goodamcodes.enums.Role;
@@ -44,15 +45,14 @@ public class AuthenticationService {
         return "User " + registeredUser.getUsername() + " registered successfully!";
     }
 
-    public String authenticate(UserAuthenticationDTO user) {
+    public TokenResponseDTO authenticate(UserAuthenticationDTO user) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        if (authentication.isAuthenticated()) {
-            UserInfo savedUser = userInfoRepository.findByUsername(user.getUsername())
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-            return jwtService.generateToken(savedUser);
-        } else {
-            return "User not authenticated";
+        if(!authentication.isAuthenticated()){
+            throw new IllegalArgumentException("User not authenticated");
         }
+        UserInfo savedUser = userInfoRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return new TokenResponseDTO(jwtService.generateToken(savedUser));
     }
 }
 

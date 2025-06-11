@@ -3,6 +3,7 @@ package com.goodamcodes.service;
 import com.goodamcodes.dto.StudentDTO;
 import com.goodamcodes.dto.security.ConfirmOTPCodeDTO;
 import com.goodamcodes.dto.security.OTPRequestDTO;
+import com.goodamcodes.dto.security.OTPResponseDTO;
 import com.goodamcodes.enums.Role;
 import com.goodamcodes.mapper.StudentMapper;
 import com.goodamcodes.model.College;
@@ -121,7 +122,7 @@ public class StudentService {
         return "Student with registration number " + student.getRegistrationNumber() + " has been deleted";
     }
 
-    public String requestOTP(OTPRequestDTO otpRequestDTO) {
+    public OTPResponseDTO requestOTP(OTPRequestDTO otpRequestDTO) {
 
         Optional<Student> student = studentRepository.findByRegistrationNumber(otpRequestDTO.getRegistrationNumber());
         if (student.isEmpty()) {
@@ -140,7 +141,7 @@ public class StudentService {
                 otp
         );
 
-        return "Voting code sent to " + voter.getUser().getEmail();
+        return new OTPResponseDTO(voter.getId(), "Voting code sent to " + voter.getUser().getEmail());
     }
 
     public String getVotingAccess(ConfirmOTPCodeDTO confirmOTPCodeDTO) {

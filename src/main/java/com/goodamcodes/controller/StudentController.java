@@ -49,7 +49,7 @@ public class StudentController {
     }
 
     @PostMapping("/otp")
-    public ResponseEntity<String> requestOTP(@RequestBody OTPRequestDTO otp) {
+    public ResponseEntity<OTPResponseDTO> requestOTP(@RequestBody OTPRequestDTO otp) {
         return ResponseEntity.status(HttpStatus.OK).body(studentService.requestOTP(otp));
     }
 

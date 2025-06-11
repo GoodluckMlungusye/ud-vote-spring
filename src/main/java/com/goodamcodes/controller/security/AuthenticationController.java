@@ -1,5 +1,6 @@
 package com.goodamcodes.controller.security;
 
+import com.goodamcodes.dto.security.TokenResponseDTO;
 import com.goodamcodes.dto.security.UserAuthenticationDTO;
 import com.goodamcodes.dto.security.UserInfoRequestDTO;
 import com.goodamcodes.service.security.AuthenticationService;
@@ -24,7 +25,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticate(@RequestBody UserAuthenticationDTO user) {
+    public ResponseEntity<TokenResponseDTO> authenticate(@RequestBody UserAuthenticationDTO user) {
         return ResponseEntity.status(HttpStatus.OK).body(authService.authenticate(user));
     }
 }

@@ -1,5 +1,7 @@
 package com.goodamcodes.controller;
 
+import com.goodamcodes.dto.VoteCheckDTO;
+import com.goodamcodes.dto.VoteCheckResponseDTO;
 import com.goodamcodes.dto.VoteDTO;
 import com.goodamcodes.service.VoteService;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +25,16 @@ public class VoteController {
 
     @GetMapping("/votes/{categoryId}")
     public ResponseEntity<Integer> countVotesInCategory(@PathVariable("categoryId") Long categoryId){
-        return ResponseEntity.status(HttpStatus.CREATED).body(voteService.countVotesInCategory(categoryId));
+        return ResponseEntity.status(HttpStatus.OK).body(voteService.countVotesInCategory(categoryId));
     }
 
     @GetMapping("/votes/contestant/{contestantId}/category/{categoryId}")
     public ResponseEntity<Integer> countContestantVotesInCategory(@PathVariable("contestantId") Long contestantId, @PathVariable("categoryId") Long categoryId){
-        return ResponseEntity.status(HttpStatus.CREATED).body(voteService.countContestantVotesInCategory(contestantId,categoryId));
+        return ResponseEntity.status(HttpStatus.OK).body(voteService.countContestantVotesInCategory(contestantId,categoryId));
     }
 
     @GetMapping("/vote-percent/contestant/{contestantId}/category/{categoryId}")
     public ResponseEntity<String> getContestantVotePercent(@PathVariable("contestantId") Long contestantId, @PathVariable("categoryId") Long categoryId){
-        return ResponseEntity.status(HttpStatus.CREATED).body(voteService.getContestantVotePercent(contestantId,categoryId));
+        return ResponseEntity.status(HttpStatus.OK).body(voteService.getContestantVotePercent(contestantId,categoryId));
     }
 }

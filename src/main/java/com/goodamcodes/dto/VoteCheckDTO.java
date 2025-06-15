@@ -5,11 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CategoryDTO {
+public class VoteCheckDTO {
 
-    private Long id;
+    private Long voterId;
+    private Long categoryId;
     private Long electionId;
-    private String name;
-    private String abbreviation;
 
 }

@@ -26,11 +26,6 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.fetchAllCategories());
     }
 
-    @GetMapping(path = "/{electionId}")
-    public ResponseEntity<List<CategoryDTO>> fetchAllCategoriesByElection(@PathVariable("electionId") Long electionId){
-        return ResponseEntity.status(HttpStatus.OK).body(categoryService.fetchAllCategoriesByElection(electionId));
-    }
-
     @PatchMapping(path = "/{categoryId}")
     public ResponseEntity<String> updateCategory(@PathVariable("categoryId") Long categoryId, @RequestBody CategoryDTO category){
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.updateCategory(categoryId, category));

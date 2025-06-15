@@ -1,5 +1,7 @@
 package com.goodamcodes.service;
 
+import com.goodamcodes.dto.VoteCheckDTO;
+import com.goodamcodes.dto.VoteCheckResponseDTO;
 import com.goodamcodes.dto.VoteDTO;
 import com.goodamcodes.model.*;
 import com.goodamcodes.repository.*;
@@ -8,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class VoteService {
@@ -36,8 +40,6 @@ public class VoteService {
         checkElectionWindow(election);
 
         checkVoterEligibilityByYear(election, voter);
-
-        checkForGeneralCategory(contestant, category, voter);
 
         checkForValidContestant(contestantRepository, category, voteDTO);
 
@@ -80,21 +82,6 @@ public class VoteService {
         }
     }
 
-    private void checkForGeneralCategory(Contestant contestant, Category category, Student voter) {
-        Category contestantCategory = contestant.getCategory();
-        boolean hasValidCategory =  contestantCategory.equals(category);
-
-        if (hasValidCategory && !category.getIsGeneral()) {
-            College voterCollege = voter.getCollege();
-            College contestantCollege = contestant.getStudent().getCollege();
-            if (!voterCollege.equals(contestantCollege)) {
-                throw new IllegalArgumentException(
-                        "This election is specific for " + contestantCollege.getName().toUpperCase() + " students."
-                );
-            }
-        }
-    }
-
     private void checkForValidContestant(ContestantRepository contestantRepository, Category category, VoteDTO voteDTO) {
         boolean contestantExists = contestantRepository.existsByIdAndCategory(
                 voteDTO.getContestantId(),
@@ -109,7 +96,7 @@ public class VoteService {
         boolean hasVoted = voteRepository
                 .existsByVoterAndCategoryAndElection(voter, category, election);
         if (hasVoted) {
-            throw new IllegalArgumentException("Voter has already voted in this category");
+            throw new IllegalArgumentException("You already voted for this category");
         }
     }
 
@@ -127,6 +114,21 @@ public class VoteService {
         if (totalVotes == 0) return "0.00%";
         double percentage = (contestantVotes * 100.0) / totalVotes;
         return String.format("%.2f%%", percentage);
+    }
+
+    public VoteCheckResponseDTO hasVoted(VoteCheckDTO voteCheckDTO) {
+        Student voter = studentRepository.findById(voteCheckDTO.getVoterId())
+                .orElseThrow(() -> new IllegalArgumentException("Voter with ID " + voteCheckDTO.getVoterId() + " not found"));
+
+        Category category = categoryRepository.findById(voteCheckDTO.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("Category with ID " + voteCheckDTO.getCategoryId() + " not found"));
+
+        Election election = electionRepository.findById(voteCheckDTO.getElectionId())
+                .orElseThrow(() -> new IllegalArgumentException("Election with ID " + voteCheckDTO.getElectionId() + " not found"));
+
+        boolean votingStatus = voteRepository.existsByVoterAndCategoryAndElection(voter, category, election);
+
+        return new VoteCheckResponseDTO(votingStatus);
     }
 
 }

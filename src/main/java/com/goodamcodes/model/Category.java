@@ -27,8 +27,6 @@ public class Category {
     @Column(unique=true)
     private String abbreviation;
 
-    private Boolean isGeneral;
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "election_id")
     @JsonBackReference

@@ -26,6 +26,10 @@ public class CategoryService {
             throw new IllegalArgumentException("Category already exists");
         }
 
+        if(categoryRepository.existsByAbbreviation(categoryDTO.getAbbreviation())){
+            throw new IllegalArgumentException("Category abbreviation exists");
+        }
+
         Category category = categoryMapper.toCategory(categoryDTO);
 
         Election election = electionRepository.findById(categoryDTO.getElectionId())
@@ -39,14 +43,6 @@ public class CategoryService {
 
     public List<CategoryDTO> fetchAllCategories() {
         List<Category> categories = categoryRepository.findAll();
-        return categoryMapper.toCategoryDTOs(categories);
-    }
-
-    public List<CategoryDTO> fetchAllCategoriesByElection(Long electionId) {
-        List<Category> categories = categoryRepository.findByElectionId(electionId);
-        if (categories.isEmpty()) {
-            throw new IllegalArgumentException("No categories found for this election");
-        }
         return categoryMapper.toCategoryDTOs(categories);
     }
 

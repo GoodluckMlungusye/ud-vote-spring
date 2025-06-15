@@ -23,13 +23,13 @@ public class CategoryService {
     public String addCategory(CategoryDTO categoryDTO) {
         Optional<Category> existingCategory = categoryRepository.findByName(categoryDTO.getName());
         if (existingCategory.isPresent()) {
-            throw new IllegalStateException("Category already exists");
+            throw new IllegalArgumentException("Category already exists");
         }
 
         Category category = categoryMapper.toCategory(categoryDTO);
 
         Election election = electionRepository.findById(categoryDTO.getElectionId())
-                .orElseThrow(() -> new IllegalStateException("Election not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Election not found"));
 
         category.setElection(election);
 
@@ -42,9 +42,17 @@ public class CategoryService {
         return categoryMapper.toCategoryDTOs(categories);
     }
 
+    public List<CategoryDTO> fetchAllCategoriesByElection(Long electionId) {
+        List<Category> categories = categoryRepository.findByElectionId(electionId);
+        if (categories.isEmpty()) {
+            throw new IllegalArgumentException("No categories found for this election");
+        }
+        return categoryMapper.toCategoryDTOs(categories);
+    }
+
     public String updateCategory(Long categoryId, CategoryDTO categoryDTO){
         Category existingCategory = categoryRepository.findById(categoryId).orElseThrow(
-                () -> new IllegalStateException("Category " +  categoryDTO.getName() + " was not found")
+                () -> new IllegalArgumentException("Category " +  categoryDTO.getName() + " was not found")
         );
 
         categoryMapper.updateCategoryFromDTO(categoryDTO, existingCategory);
@@ -55,9 +63,10 @@ public class CategoryService {
 
     public String deleteCategory(Long categoryId){
         Category category = categoryRepository.findById(categoryId).orElseThrow(
-                () -> new IllegalStateException("Category does not exist")
+                () -> new IllegalArgumentException("Category does not exist")
         );
         categoryRepository.deleteById(categoryId);
         return "Category " + category.getName() + " has been deleted";
     }
+
 }

@@ -54,6 +54,11 @@ public class ContestantService {
         return contestantMapper.toContestantDTOs(contestants);
     }
 
+    public List<ContestantDTO> fetchAllContestantsByCategoryId(Long categoryId) {
+        List<Contestant> contestants = contestantRepository.findByCategoryId(categoryId);
+        return contestantMapper.toContestantDTOs(contestants);
+    }
+
     public String updateContestant(Long contestantId, ContestantDTO contestantDTO, MultipartFile file){
         Contestant existingContestant = contestantRepository.findById(contestantId).orElseThrow(
                 () -> new IllegalStateException("Contestant was not found")

@@ -6,11 +6,13 @@ import com.goodamcodes.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ContestantRepository extends JpaRepository<Contestant,Long> {
     Optional<Contestant> findByStudent(Student student);
     boolean existsByIdAndCategory(Long id, Category category);
+    List<Contestant> findByCategoryId(Long categoryId);
 
 }

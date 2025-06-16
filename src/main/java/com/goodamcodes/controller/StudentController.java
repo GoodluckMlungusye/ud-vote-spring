@@ -1,13 +1,12 @@
 package com.goodamcodes.controller;
 
+import com.goodamcodes.dto.ContestantDTO;
 import com.goodamcodes.dto.ElectionDTO;
 import com.goodamcodes.dto.StudentDTO;
-import com.goodamcodes.dto.VoteCheckDTO;
-import com.goodamcodes.dto.VoteCheckResponseDTO;
 import com.goodamcodes.dto.security.*;
+import com.goodamcodes.service.ContestantService;
 import com.goodamcodes.service.ElectionService;
 import com.goodamcodes.service.StudentService;
-import com.goodamcodes.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ public class StudentController {
 
     private final StudentService studentService;
     private final ElectionService electionService;
-    private final VoteService voteService;
+    private final ContestantService contestantService;
 
     @PostMapping
     public ResponseEntity<String> registerStudent(@RequestPart("student") StudentDTO studentDTO, @RequestPart("file") MultipartFile file){
@@ -70,9 +69,8 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.OK).body(electionService.fetchAllElections());
     }
 
-    @PostMapping("/vote-status")
-    public ResponseEntity<VoteCheckResponseDTO> hasVoted(@RequestBody VoteCheckDTO request){
-        return ResponseEntity.status(HttpStatus.OK).body(voteService.hasVoted(request));
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<List<ContestantDTO>> fetchAllContestantsByCategoryId(@PathVariable("categoryId") Long categoryId){
+        return ResponseEntity.status(HttpStatus.OK).body(contestantService.fetchAllContestantsByCategoryId(categoryId));
     }
-
 }

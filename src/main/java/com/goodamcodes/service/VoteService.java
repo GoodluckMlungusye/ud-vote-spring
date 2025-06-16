@@ -1,7 +1,5 @@
 package com.goodamcodes.service;
 
-import com.goodamcodes.dto.VoteCheckDTO;
-import com.goodamcodes.dto.VoteCheckResponseDTO;
 import com.goodamcodes.dto.VoteDTO;
 import com.goodamcodes.model.*;
 import com.goodamcodes.repository.*;
@@ -10,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -114,21 +111,6 @@ public class VoteService {
         if (totalVotes == 0) return "0.00%";
         double percentage = (contestantVotes * 100.0) / totalVotes;
         return String.format("%.2f%%", percentage);
-    }
-
-    public VoteCheckResponseDTO hasVoted(VoteCheckDTO voteCheckDTO) {
-        Student voter = studentRepository.findById(voteCheckDTO.getVoterId())
-                .orElseThrow(() -> new IllegalArgumentException("Voter with ID " + voteCheckDTO.getVoterId() + " not found"));
-
-        Category category = categoryRepository.findById(voteCheckDTO.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("Category with ID " + voteCheckDTO.getCategoryId() + " not found"));
-
-        Election election = electionRepository.findById(voteCheckDTO.getElectionId())
-                .orElseThrow(() -> new IllegalArgumentException("Election with ID " + voteCheckDTO.getElectionId() + " not found"));
-
-        boolean votingStatus = voteRepository.existsByVoterAndCategoryAndElection(voter, category, election);
-
-        return new VoteCheckResponseDTO(votingStatus);
     }
 
 }

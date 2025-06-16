@@ -1,7 +1,5 @@
 package com.goodamcodes.controller;
 
-import com.goodamcodes.dto.VoteCheckDTO;
-import com.goodamcodes.dto.VoteCheckResponseDTO;
 import com.goodamcodes.dto.VoteDTO;
 import com.goodamcodes.service.VoteService;
 import lombok.RequiredArgsConstructor;

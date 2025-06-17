@@ -1,10 +1,12 @@
 package com.goodamcodes.service;
 
 import com.goodamcodes.dto.ContestantDTO;
+import com.goodamcodes.dto.ContestantDetailsDTO;
 import com.goodamcodes.mapper.ContestantMapper;
 import com.goodamcodes.model.Category;
 import com.goodamcodes.model.Contestant;
 import com.goodamcodes.model.Student;
+import com.goodamcodes.model.security.UserInfo;
 import com.goodamcodes.repository.CategoryRepository;
 import com.goodamcodes.repository.ContestantRepository;
 import com.goodamcodes.repository.StudentRepository;
@@ -97,5 +99,19 @@ public class ContestantService {
         fileService.deleteFile(contestant.getVideoUrl());
         contestantRepository.deleteById(contestantId);
         return "Contestant " + contestant.getStudent().getUser().getFirstName() + " " + contestant.getStudent().getUser().getLastName() + " has been deleted";
+    }
+
+    public ContestantDetailsDTO getContestantDetails(Long contestantId){
+        Student student = studentRepository.findById(contestantId).orElseThrow(()-> new IllegalArgumentException("Student associated with this contestant does not exist"));
+        UserInfo user = student.getUser();
+
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        String name = firstName + " " + lastName;
+        String imageUrl = student.getImageUrl();
+        String collegeName = student.getCollege().getName();
+
+        return new ContestantDetailsDTO(name, imageUrl, collegeName);
+
     }
 }

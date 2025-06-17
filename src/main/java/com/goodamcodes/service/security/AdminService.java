@@ -51,7 +51,7 @@ public class AdminService {
 
     private UserInfo getUserByUsername(String username) {
         return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 
     private Role toRoleEnum(String roleName) {

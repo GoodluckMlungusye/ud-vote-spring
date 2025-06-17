@@ -1,6 +1,7 @@
 package com.goodamcodes.controller;
 
 import com.goodamcodes.dto.ContestantDTO;
+import com.goodamcodes.dto.ContestantDetailsDTO;
 import com.goodamcodes.dto.ElectionDTO;
 import com.goodamcodes.dto.StudentDTO;
 import com.goodamcodes.dto.security.*;
@@ -69,8 +70,13 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.OK).body(electionService.fetchAllElections());
     }
 
-    @GetMapping("/{categoryId}")
+    @GetMapping("/contestants/{categoryId}")
     public ResponseEntity<List<ContestantDTO>> fetchAllContestantsByCategoryId(@PathVariable("categoryId") Long categoryId){
         return ResponseEntity.status(HttpStatus.OK).body(contestantService.fetchAllContestantsByCategoryId(categoryId));
+    }
+
+    @GetMapping("/contestant/{contestantId}")
+    public ResponseEntity<ContestantDetailsDTO> getContestantDetails(@PathVariable("contestantId") Long contestantId){
+        return ResponseEntity.status(HttpStatus.OK).body(contestantService.getContestantDetails(contestantId));
     }
 }

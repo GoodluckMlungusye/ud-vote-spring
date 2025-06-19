@@ -20,7 +20,7 @@ public class ElectionService {
     public String addElection(ElectionDTO electionDTO) {
         Optional<Election> existingElection = electionRepository.findByName(electionDTO.getName());
         if (existingElection.isPresent()) {
-            throw new IllegalStateException("Election already exists");
+            throw new IllegalArgumentException("Election already exists");
         }
 
         Election election = electionMapper.toElection(electionDTO);
@@ -36,7 +36,7 @@ public class ElectionService {
 
     public String updateElection(Long electionId, ElectionDTO electionDTO){
         Election existingElection = electionRepository.findById(electionId).orElseThrow(
-                () -> new IllegalStateException("Election " +  electionDTO.getName() + " was not found")
+                () -> new IllegalArgumentException("Election " +  electionDTO.getName() + " was not found")
         );
 
         electionMapper.updateElectionFromDTO(electionDTO, existingElection);
@@ -47,7 +47,7 @@ public class ElectionService {
 
     public String deleteElection(Long electionId){
         Election election = electionRepository.findById(electionId).orElseThrow(
-                () -> new IllegalStateException("Election does not exist")
+                () -> new IllegalArgumentException("Election does not exist")
         );
         electionRepository.deleteById(electionId);
         return "Election " + election.getName() + " has been deleted";

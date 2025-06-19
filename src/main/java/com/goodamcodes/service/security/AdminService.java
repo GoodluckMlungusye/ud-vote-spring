@@ -5,7 +5,6 @@ import com.goodamcodes.dto.security.RoleUpdateRequestDTO;
 import com.goodamcodes.model.security.UserInfo;
 import com.goodamcodes.repository.security.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;

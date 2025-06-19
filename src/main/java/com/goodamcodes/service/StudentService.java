@@ -43,13 +43,13 @@ public class StudentService {
     public String registerStudent(StudentDTO studentDTO, MultipartFile file) {
         Optional<Student> existingStudent = studentRepository.findByRegistrationNumber(studentDTO.getRegistrationNumber());
         if (existingStudent.isPresent()) {
-            throw new IllegalStateException("Student already exists");
+            throw new IllegalArgumentException("Student already exists");
         }
 
         College college = collegeRepository.findById(studentDTO.getCollegeId())
-                .orElseThrow(() -> new IllegalStateException("College not found"));
+                .orElseThrow(() -> new IllegalArgumentException("College not found"));
         UserInfo user = userInfoRepository.findById(studentDTO.getUserId())
-                .orElseThrow(() -> new IllegalStateException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         userInfoService.addNewRoleToUser(user, Role.VOTER);
 
@@ -83,7 +83,7 @@ public class StudentService {
 
     public String updateStudent(Long studentId, StudentDTO studentDTO, MultipartFile file){
         Student existingStudent = studentRepository.findById(studentId).orElseThrow(
-                () -> new IllegalStateException("Student " +  studentDTO.getRegistrationNumber() + " was not found")
+                () -> new IllegalArgumentException("Student " +  studentDTO.getRegistrationNumber() + " was not found")
         );
 
         studentMapper.updateStudentFromDTO(studentDTO, existingStudent);
@@ -96,14 +96,14 @@ public class StudentService {
 
         if(studentDTO.getCollegeId() != null && !studentDTO.getCollegeId().equals(existingStudent.getCollege().getId())) {
             College newCollege = collegeRepository.findById(studentDTO.getCollegeId()).orElseThrow(
-                    () -> new IllegalStateException("College does not exist")
+                    () -> new IllegalArgumentException("College does not exist")
             );
             existingStudent.setCollege(newCollege);
         }
 
         if(studentDTO.getUserId() != null && !studentDTO.getUserId().equals(existingStudent.getUser().getId())) {
             UserInfo newUser = userInfoRepository.findById(studentDTO.getUserId()).orElseThrow(
-                    () -> new IllegalStateException("User does not exist")
+                    () -> new IllegalArgumentException("User does not exist")
             );
             existingStudent.setUser(newUser);
         }
@@ -115,7 +115,7 @@ public class StudentService {
 
     public String deleteStudent(Long studentId){
         Student student = studentRepository.findById(studentId).orElseThrow(
-                () -> new IllegalStateException("Student does not exist")
+                () -> new IllegalArgumentException("Student does not exist")
         );
         fileService.deleteFile(student.getImageUrl());
         studentRepository.deleteById(studentId);
@@ -126,7 +126,7 @@ public class StudentService {
 
         Optional<Student> student = studentRepository.findByRegistrationNumber(otpRequestDTO.getRegistrationNumber());
         if (student.isEmpty()) {
-            throw new IllegalStateException("This student was not registered");
+            throw new IllegalArgumentException("This student was not registered");
         }
 
         String otp = otpService.createOTP();

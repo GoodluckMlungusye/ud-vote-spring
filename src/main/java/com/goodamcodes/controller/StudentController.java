@@ -1,13 +1,7 @@
 package com.goodamcodes.controller;
 
-import com.goodamcodes.dto.ContestantDTO;
-import com.goodamcodes.dto.ContestantDetailsDTO;
-import com.goodamcodes.dto.ElectionDTO;
-import com.goodamcodes.dto.StudentDTO;
-import com.goodamcodes.dto.security.*;
-import com.goodamcodes.service.ContestantService;
-import com.goodamcodes.service.ElectionService;
-import com.goodamcodes.service.StudentService;
+import com.goodamcodes.dto.*;
+import com.goodamcodes.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +16,6 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
-    private final ElectionService electionService;
-    private final ContestantService contestantService;
 
     @PostMapping
     public ResponseEntity<String> registerStudent(@RequestPart("student") StudentDTO studentDTO, @RequestPart("file") MultipartFile file){
@@ -33,16 +25,6 @@ public class StudentController {
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getStudents(){
         return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudents());
-    }
-
-    @GetMapping("/{collegeId}/{year}")
-    public ResponseEntity<List<StudentDTO>> getStudentsByCollegeAndYear(@PathVariable("collegeId") Long collegeId, @PathVariable("year") Integer year){
-        return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudentsByCollegeAndYear(collegeId, year));
-    }
-
-    @GetMapping("/voted/{collegeId}/{year}")
-    public ResponseEntity<List<StudentDTO>> getStudentsWhoVotedByCollegeAndYear(@PathVariable("collegeId") Long collegeId, @PathVariable("year") Integer year){
-        return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudentsWhoVotedByCollegeAndYear(collegeId, year));
     }
 
     @PatchMapping(path = "/{studentId}")
@@ -55,28 +37,4 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.OK).body(studentService.deleteStudent(studentId));
     }
 
-    @PostMapping("/otp")
-    public ResponseEntity<OTPResponseDTO> requestOTP(@RequestBody OTPRequestDTO otp) {
-        return ResponseEntity.status(HttpStatus.OK).body(studentService.requestOTP(otp));
-    }
-
-    @PatchMapping("/access")
-    public ResponseEntity<String> getVotingAccess(@RequestBody ConfirmOTPCodeDTO request) {
-        return ResponseEntity.status(HttpStatus.OK).body(studentService.getVotingAccess(request));
-    }
-
-    @GetMapping("/elections")
-    public ResponseEntity<List<ElectionDTO>> getElectionTypes(){
-        return ResponseEntity.status(HttpStatus.OK).body(electionService.fetchAllElections());
-    }
-
-    @GetMapping("/contestants/{categoryId}")
-    public ResponseEntity<List<ContestantDTO>> fetchAllContestantsByCategoryId(@PathVariable("categoryId") Long categoryId){
-        return ResponseEntity.status(HttpStatus.OK).body(contestantService.fetchAllContestantsByCategoryId(categoryId));
-    }
-
-    @GetMapping("/contestant/{contestantId}")
-    public ResponseEntity<ContestantDetailsDTO> getContestantDetails(@PathVariable("contestantId") Long contestantId){
-        return ResponseEntity.status(HttpStatus.OK).body(contestantService.getContestantDetails(contestantId));
-    }
 }

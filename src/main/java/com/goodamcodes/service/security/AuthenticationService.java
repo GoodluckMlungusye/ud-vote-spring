@@ -1,6 +1,5 @@
 package com.goodamcodes.service.security;
 
-import com.goodamcodes.dto.security.TokenResponseDTO;
 import com.goodamcodes.dto.security.UserAuthenticationDTO;
 import com.goodamcodes.dto.security.UserInfoRequestDTO;
 import com.goodamcodes.enums.Role;
@@ -10,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,14 +43,14 @@ public class AuthenticationService {
         return "User " + registeredUser.getUsername() + " registered successfully!";
     }
 
-    public TokenResponseDTO authenticate(UserAuthenticationDTO user) {
+    public String authenticate(UserAuthenticationDTO user) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         if(!authentication.isAuthenticated()){
             throw new IllegalArgumentException("User not authenticated");
         }
         UserInfo savedUser = userInfoRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        return new TokenResponseDTO(jwtService.generateToken(savedUser));
+        return jwtService.generateToken(savedUser);
     }
 }
 

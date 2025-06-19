@@ -35,7 +35,7 @@ public class ContestantService {
 
         Optional<Contestant> existingContestant = contestantRepository.findByStudent(student);
         if (existingContestant.isPresent()) {
-            throw new IllegalStateException("Contestant already exists");
+            throw new IllegalArgumentException("Contestant already exists");
         }
 
         Contestant contestant = contestantMapper.toContestant(contestantDTO);
@@ -63,7 +63,7 @@ public class ContestantService {
 
     public String updateContestant(Long contestantId, ContestantDTO contestantDTO, MultipartFile file){
         Contestant existingContestant = contestantRepository.findById(contestantId).orElseThrow(
-                () -> new IllegalStateException("Contestant was not found")
+                () -> new IllegalArgumentException("Contestant was not found")
         );
 
         contestantMapper.updateContestantFromDTO(contestantDTO, existingContestant);
@@ -76,14 +76,14 @@ public class ContestantService {
 
         if(contestantDTO.getStudentId() != null && !contestantDTO.getStudentId().equals(existingContestant.getStudent().getId())) {
             Student newStudent = studentRepository.findById(contestantDTO.getStudentId()).orElseThrow(
-                    () -> new IllegalStateException("Student does not exist")
+                    () -> new IllegalArgumentException("Student does not exist")
             );
             existingContestant.setStudent(newStudent);
         }
 
         if(contestantDTO.getCategoryId() != null && !contestantDTO.getCategoryId().equals(existingContestant.getCategory().getId())) {
             Category newCategory = categoryRepository.findById(contestantDTO.getCategoryId()).orElseThrow(
-                    () -> new IllegalStateException("Category does not exist")
+                    () -> new IllegalArgumentException("Category does not exist")
             );
             existingContestant.setCategory(newCategory);
         }
@@ -94,7 +94,7 @@ public class ContestantService {
 
     public String deleteContestant(Long contestantId){
         Contestant contestant = contestantRepository.findById(contestantId).orElseThrow(
-                () -> new IllegalStateException("Contestant does not exist")
+                () -> new IllegalArgumentException("Contestant does not exist")
         );
         fileService.deleteFile(contestant.getVideoUrl());
         contestantRepository.deleteById(contestantId);

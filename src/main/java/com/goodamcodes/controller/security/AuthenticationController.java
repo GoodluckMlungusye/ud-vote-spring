@@ -1,16 +1,15 @@
 package com.goodamcodes.controller.security;
 
-import com.goodamcodes.dto.security.TokenResponseDTO;
+import com.goodamcodes.dto.security.ConfirmPasswordResetDTO;
+import com.goodamcodes.dto.security.EmailRequestDTO;
 import com.goodamcodes.dto.security.UserAuthenticationDTO;
 import com.goodamcodes.dto.security.UserInfoRequestDTO;
 import com.goodamcodes.service.security.AuthenticationService;
+import com.goodamcodes.service.security.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final AuthenticationService authService;
+    private final UserInfoService userInfoService;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody UserInfoRequestDTO user) {
@@ -25,7 +25,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDTO> authenticate(@RequestBody UserAuthenticationDTO user) {
+    public ResponseEntity<String> authenticate(@RequestBody UserAuthenticationDTO user) {
         return ResponseEntity.status(HttpStatus.OK).body(authService.authenticate(user));
+    }
+
+    @PostMapping("/new-password")
+    public ResponseEntity<String> requestPasswordReset(@RequestBody EmailRequestDTO email) {
+        return ResponseEntity.status(HttpStatus.OK).body(userInfoService.requestPasswordReset(email));
+    }
+
+    @PatchMapping("/confirm-password")
+    public ResponseEntity<String> confirmPasswordReset(@RequestBody ConfirmPasswordResetDTO request) {
+        return ResponseEntity.status(HttpStatus.OK).body(userInfoService.confirmPasswordReset(request));
     }
 }

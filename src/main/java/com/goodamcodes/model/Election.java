@@ -1,6 +1,7 @@
 package com.goodamcodes.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.goodamcodes.util.TimeZones;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Election {
+
+    private static final ZoneId TIME_ZONE = TimeZones.TANZANIA_ZONE;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,13 +42,13 @@ public class Election {
 
     public Instant getStartInstant() {
         LocalDateTime startDateTime = LocalDateTime.of(date, startTime);
-        ZonedDateTime zonedStart = startDateTime.atZone(ZoneId.systemDefault());
+        ZonedDateTime zonedStart = startDateTime.atZone(TIME_ZONE);
         return zonedStart.toInstant();
     }
 
     public Instant getEndInstant() {
         LocalDateTime endDateTime = LocalDateTime.of(date, endTime);
-        ZonedDateTime zonedEnd = endDateTime.atZone(ZoneId.systemDefault());
+        ZonedDateTime zonedEnd = endDateTime.atZone(TIME_ZONE);
         return zonedEnd.toInstant();
     }
 

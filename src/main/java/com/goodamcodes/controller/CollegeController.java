@@ -27,11 +27,6 @@ public class CollegeController {
         return ResponseEntity.status(HttpStatus.OK).body(collegeService.fetchAllColleges());
     }
 
-    @GetMapping(path = "/rating/{collegeId}/{year}")
-    public ResponseEntity<String> getCollegeParticipationRating(@PathVariable("collegeId") Long collegeId, @PathVariable("year") Integer year){
-        return ResponseEntity.status(HttpStatus.OK).body(collegeService.getCollegeParticipationRatingPerYear(collegeId, year));
-    }
-
     @PatchMapping(path = "/{collegeId}")
     public ResponseEntity<String> updateCollege(@PathVariable("collegeId") Long collegeId, @RequestPart("college") CollegeDTO collegeDTO, @RequestPart("file") MultipartFile file){
         return ResponseEntity.status(HttpStatus.OK).body(collegeService.updateCollege(collegeId, collegeDTO, file));

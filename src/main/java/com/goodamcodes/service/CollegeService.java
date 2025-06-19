@@ -24,7 +24,7 @@ public class CollegeService {
     public String addCollege(CollegeDTO collegeDTO, MultipartFile file) {
         Optional<College> existingCollege = collegeRepository.findByNameAndElectionYear(collegeDTO.getName(),  collegeDTO.getElectionYear());
         if (existingCollege.isPresent()) {
-            throw new IllegalStateException("College already exists");
+            throw new IllegalArgumentException("College already exists");
         }
         College college = collegeMapper.toCollege(collegeDTO);
 
@@ -43,7 +43,7 @@ public class CollegeService {
 
     public String updateCollege(Long collegeId, CollegeDTO collegeDTO, MultipartFile file){
         College existingCollege = collegeRepository.findById(collegeId).orElseThrow(
-                () -> new IllegalStateException("College " +  collegeDTO.getName() + " was not found")
+                () -> new IllegalArgumentException("College " +  collegeDTO.getName() + " was not found")
         );
 
         collegeMapper.updateCollegeFromDTO(collegeDTO, existingCollege);
@@ -60,7 +60,7 @@ public class CollegeService {
 
     public String deleteCollege(Long collegeId){
         College college = collegeRepository.findById(collegeId).orElseThrow(
-                () -> new IllegalStateException("College does not exist")
+                () -> new IllegalArgumentException("College does not exist")
         );
         fileService.deleteFile(college.getImageUrl());
         collegeRepository.deleteById(collegeId);

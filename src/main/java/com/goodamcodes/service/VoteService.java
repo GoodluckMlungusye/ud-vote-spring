@@ -113,4 +113,8 @@ public class VoteService {
         return String.format("%.2f%%", percentage);
     }
 
+    public boolean hasVoted(Long categoryId, Long voterId) {
+        return voteRepository.existsByCategoryIdAndVoterId(categoryId, voterId);
+    }
+
 }

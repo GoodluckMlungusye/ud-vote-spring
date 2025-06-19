@@ -1,6 +1,5 @@
 package com.goodamcodes.service;
 
-import com.goodamcodes.dto.security.TokenResponseDTO;
 import com.goodamcodes.dto.security.UserAuthenticationDTO;
 import com.goodamcodes.dto.security.UserInfoRequestDTO;
 import com.goodamcodes.model.security.UserInfo;
@@ -98,9 +97,9 @@ class AuthenticationServiceTest {
             when(userInfoRepository.findByUsername("john")).thenReturn(Optional.of(savedUser));
             when(jwtService.generateToken(savedUser)).thenReturn("mocked-jwt-token");
 
-            TokenResponseDTO tokenResponseDTO = authService.authenticate(loginUser);
+            String token = authService.authenticate(loginUser);
 
-            assertEquals("mocked-jwt-token", tokenResponseDTO.getToken());
+            assertEquals("mocked-jwt-token", token);
         }
 
         @Test
@@ -113,9 +112,9 @@ class AuthenticationServiceTest {
             when(authenticationManager.authenticate(any())).thenReturn(auth);
             when(auth.isAuthenticated()).thenReturn(false);
 
-            TokenResponseDTO tokenResponseDTOResult = authService.authenticate(user);
+            String token = authService.authenticate(user);
 
-            assertEquals("User not authenticated", tokenResponseDTOResult.getToken());
+            assertEquals("User not authenticated", token);
         }
 
         @Test

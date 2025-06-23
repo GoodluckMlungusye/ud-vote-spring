@@ -1,6 +1,8 @@
 package com.goodamcodes.service;
 
+import com.goodamcodes.dto.ResultsDTO;
 import com.goodamcodes.dto.VoteDTO;
+import com.goodamcodes.dto.contestant.ContestantResponseDTO;
 import com.goodamcodes.model.*;
 import com.goodamcodes.repository.*;
 import jakarta.transaction.Transactional;
@@ -8,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +21,8 @@ public class VoteService {
     private final StudentRepository studentRepository;
     private final ElectionRepository electionRepository;
     private final CategoryRepository categoryRepository;
+    private final ContestantQueryService contestantQueryService;
+    private final VoteQueryService voteQueryService;
 
     @Transactional
     public String castVote(VoteDTO  voteDTO) {
@@ -97,24 +102,15 @@ public class VoteService {
         }
     }
 
-    public int countVotesInCategory(Long categoryId) {
-        return voteRepository.findAllByCategoryId(categoryId).size();
-    }
-
-    public int countContestantVotesInCategory(Long contestantId, Long categoryId) {
-        return voteRepository.findAllByContestantIdAndCategoryId(contestantId,categoryId).size();
-    }
-
-    public String getContestantVotePercent(Long contestantId, Long categoryId) {
-        int totalVotes = countVotesInCategory(categoryId);
-        int contestantVotes = countContestantVotesInCategory(contestantId, categoryId);
-        if (totalVotes == 0) return "0.00%";
-        double percentage = (contestantVotes * 100.0) / totalVotes;
-        return String.format("%.2f%%", percentage);
-    }
-
     public boolean hasVoted(Long categoryId, Long voterId) {
         return voteRepository.existsByCategoryIdAndVoterId(categoryId, voterId);
+    }
+
+    public ResultsDTO getCategoryResults(Long categoryId) {
+        List<ContestantResponseDTO> contestants = contestantQueryService.getContestants(categoryId);
+        int totalVotes = voteQueryService.countVotesInCategory(categoryId);
+
+        return new ResultsDTO(contestants,totalVotes);
     }
 
 }

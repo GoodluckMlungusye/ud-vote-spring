@@ -8,7 +8,6 @@ import com.goodamcodes.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user/student")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('VOTER')")
 public class VoterController {
 
     private final StudentService studentService;
     private final ElectionService electionService;
-    private final ContestantService contestantService;
     private final VoteService voteService;
 
     @PostMapping("/otp")
@@ -39,11 +36,6 @@ public class VoterController {
         return ResponseEntity.status(HttpStatus.OK).body(electionService.fetchAllElections());
     }
 
-    @GetMapping("/contestant/{contestantId}")
-    public ResponseEntity<ContestantDetailsDTO> getContestantDetails(@PathVariable("contestantId") Long contestantId){
-        return ResponseEntity.status(HttpStatus.OK).body(contestantService.getContestantDetails(contestantId));
-    }
-
     @PostMapping("/vote")
     public ResponseEntity<String> castVote(@RequestBody VoteDTO vote){
         return ResponseEntity.status(HttpStatus.CREATED).body(voteService.castVote(vote));
@@ -52,5 +44,10 @@ public class VoterController {
     @GetMapping("/vote-status/category/{categoryId}/voter/{voterId}")
     public ResponseEntity<Boolean> hasVoted(@PathVariable("categoryId") Long categoryId, @PathVariable("voterId") Long voterId){
         return ResponseEntity.status(HttpStatus.OK).body(voteService.hasVoted(categoryId, voterId));
+    }
+
+    @GetMapping("/results/{categoryId}")
+    public ResponseEntity<ResultsDTO> getCategoryResults(@PathVariable Long categoryId) {
+        return ResponseEntity.ok(voteService.getCategoryResults(categoryId));
     }
 }

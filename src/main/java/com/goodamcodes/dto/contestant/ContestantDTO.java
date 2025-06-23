@@ -1,4 +1,4 @@
-package com.goodamcodes.dto;
+package com.goodamcodes.dto.contestant;
 
 import lombok.Getter;
 import lombok.Setter;

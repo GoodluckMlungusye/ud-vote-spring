@@ -1,6 +1,6 @@
 package com.goodamcodes.controller;
 
-import com.goodamcodes.dto.ContestantDTO;
+import com.goodamcodes.dto.contestant.ContestantDTO;
 import com.goodamcodes.service.ContestantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

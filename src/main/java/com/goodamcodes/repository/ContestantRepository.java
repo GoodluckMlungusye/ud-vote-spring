@@ -14,5 +14,6 @@ public interface ContestantRepository extends JpaRepository<Contestant,Long> {
     Optional<Contestant> findByStudent(Student student);
     boolean existsByIdAndCategory(Long id, Category category);
     List<Contestant> findByCategoryId(Long categoryId);
+    Optional<Contestant> findFirstByCategoryId(Long categoryId);
 
 }

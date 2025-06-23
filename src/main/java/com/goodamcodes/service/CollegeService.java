@@ -1,6 +1,6 @@
 package com.goodamcodes.service;
 
-import com.goodamcodes.dto.CollegeDTO;
+import com.goodamcodes.dto.college.CollegeDTO;
 import com.goodamcodes.mapper.CollegeMapper;
 import com.goodamcodes.model.College;
 import com.goodamcodes.repository.CollegeRepository;
@@ -19,7 +19,6 @@ public class CollegeService {
     private final CollegeRepository collegeRepository;
     private final CollegeMapper collegeMapper;
     private final FileService fileService;
-    private final StudentService studentService;
 
     public String addCollege(CollegeDTO collegeDTO, MultipartFile file) {
         Optional<College> existingCollege = collegeRepository.findByNameAndElectionYear(collegeDTO.getName(),  collegeDTO.getElectionYear());
@@ -65,14 +64,6 @@ public class CollegeService {
         fileService.deleteFile(college.getImageUrl());
         collegeRepository.deleteById(collegeId);
         return "College " + college.getName() + " has been deleted";
-    }
-
-    public String getCollegeParticipationRatingPerYear(Long collegeId, Integer year) {
-        int registeredStudents = studentService.getStudentsByCollegeAndYear(collegeId,year).size();
-        int votedStudents = studentService.getStudentsWhoVotedByCollegeAndYear(collegeId,year).size();
-        if (registeredStudents == 0) return "0.00%";
-        double percentage = (votedStudents * 100.0) /registeredStudents;
-        return String.format("%.2f%%", percentage);
     }
 
 }

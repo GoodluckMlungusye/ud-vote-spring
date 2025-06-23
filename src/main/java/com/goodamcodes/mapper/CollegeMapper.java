@@ -1,11 +1,9 @@
 package com.goodamcodes.mapper;
 
-import com.goodamcodes.dto.CollegeDTO;
+import com.goodamcodes.dto.college.CollegeDTO;
+import com.goodamcodes.dto.college.CollegeResponseDTO;
 import com.goodamcodes.model.College;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -13,10 +11,19 @@ import java.util.List;
 public interface CollegeMapper {
 
     College toCollege(CollegeDTO collegeDTO);
-    CollegeDTO toCollegeDTO(College college);
     List<CollegeDTO> toCollegeDTOs(List<College> colleges);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateCollegeFromDTO(CollegeDTO collegeDTO,@MappingTarget College college);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "imageUrl", target = "imageUrl")
+    @Mapping(source = "electionYear", target = "electionYear")
+    @Mapping(target = "registeredStudents", ignore = true)
+    @Mapping(target = "votedStudents", ignore = true)
+    @Mapping(target = "rating", ignore = true)
+    @Mapping(target = "percentage", ignore = true)
+    CollegeResponseDTO toResponseDTO(College college);
 
 }

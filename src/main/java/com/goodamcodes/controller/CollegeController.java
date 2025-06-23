@@ -1,6 +1,6 @@
 package com.goodamcodes.controller;
 
-import com.goodamcodes.dto.CollegeDTO;
+import com.goodamcodes.dto.college.CollegeDTO;
 import com.goodamcodes.service.CollegeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

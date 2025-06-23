@@ -9,5 +9,4 @@ import java.util.Optional;
 @Repository
 public interface CollegeRepository extends JpaRepository<College,Long> {
     Optional<College> findByNameAndElectionYear(String name, Integer electionYear);
-
 }

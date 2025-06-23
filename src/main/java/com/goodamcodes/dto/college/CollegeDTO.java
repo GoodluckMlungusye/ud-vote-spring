@@ -1,4 +1,4 @@
-package com.goodamcodes.dto;
+package com.goodamcodes.dto.college;
 
 import lombok.Getter;
 import lombok.Setter;

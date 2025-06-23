@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-
 public class ContestantQueryController {
 
     private final ContestantQueryService contestantQueryService;

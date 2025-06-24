@@ -18,6 +18,10 @@ public class CollegeQueryService {
     private final StudentService studentService;
     private final CollegeRepository collegeRepository;
 
+    public List<Integer> getElectionYears() {
+        return collegeRepository.findDistinctElectionYearsDesc();
+    }
+
     public List<CollegeResponseDTO> getCollegesStats(int year) {
 
         List<College> colleges = collegeRepository.findAll();

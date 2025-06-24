@@ -15,6 +15,11 @@ public class CollegeStatsController {
 
     private final CollegeQueryService collegeQueryService;
 
+    @GetMapping("/years")
+    public ResponseEntity<List<Integer>> getElectionYears() {
+        return ResponseEntity.ok(collegeQueryService.getElectionYears());
+    }
+
     @GetMapping("/year/{electionYear}")
     public ResponseEntity<List<CollegeResponseDTO>> getCollegesStats(@PathVariable int electionYear) {
         return ResponseEntity.ok(collegeQueryService.getCollegesStats(electionYear));

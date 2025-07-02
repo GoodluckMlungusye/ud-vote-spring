@@ -57,6 +57,6 @@ logging:
       goodamcodes: DEBUG
 
 url:
-  image: public/images/
-  video: public/videos/
-  document: public/files/
+  image: uploads/images/
+  video: uploads/videos/
+  document: uploads/files/

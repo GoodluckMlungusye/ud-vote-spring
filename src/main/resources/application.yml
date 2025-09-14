@@ -3,9 +3,9 @@ spring:
     name: ud-vote-spring
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/db
-    username: postgres
-    password: password
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -28,8 +28,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: email
-    password: app-password
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -42,13 +42,13 @@ server:
     include-message: always
 
 jwt:
-  secret: key
+  secret: ${JWT_SECRET}
 
 admin:
   default:
-    username: username
-    password: password
-    email: email
+    username: ${ADMIN_DEFAULT_USERNAME}
+    password: ${ADMIN_DEFAULT_PASSWORD}
+    email: ${ADMIN_DEFAULT_EMAIL}
 
 logging:
   level:

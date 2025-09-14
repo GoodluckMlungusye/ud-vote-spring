@@ -1,13 +1,14 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Resources ###
 /.phpunit.cache
 /node_modules
-/uploads/build
-/uploads/hot
-/uploads/storage
 /storage/*.key
 /vendor
-.env
-.env.backup
-.env.production
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -15,7 +16,42 @@ auth.json
 npm-debug.log
 yarn-error.log
 /.fleet
-/.idea
-/.vscode
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Volumes
 /postgres-ud-vote
-/target
+/uploads/build
+/uploads/hot
+/uploads/storage
+
+# Local environment files
+.env
+.env.backup
+.env.production

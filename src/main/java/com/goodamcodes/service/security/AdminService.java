@@ -5,6 +5,7 @@ import com.goodamcodes.dto.security.RoleUpdateRequestDTO;
 import com.goodamcodes.model.security.UserInfo;
 import com.goodamcodes.repository.security.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -50,7 +51,7 @@ public class AdminService {
 
     private UserInfo getUserByUsername(String username) {
         return repository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     private Role toRoleEnum(String roleName) {

@@ -81,7 +81,7 @@ class UserInfoServiceTest {
             List<UserInfoResponseDTO> result = userInfoService.getAllUsers();
 
             assertEquals(1, result.size());
-            assertEquals("john", result.getFirst().getUsername());
+            assertEquals("john", result.get(0).getUsername());
             verify(userInfoMapper).toUserInfoResponseDTO(user);
         }
 

@@ -1,0 +1,53 @@
+name: UDVote CI/CD with Docker to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ud-vote:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/ud-vote:latest
+          cache-to: type=inline
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker
+    steps:
+      - name: Deploy to EC2 via SSH (safe update)
+        uses: appleboy/ssh-action@v0.1.9
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd ~/ud_vote
+
+            docker-compose -f docker-compose.prod.yml pull
+
+            docker-compose -f docker-compose.prod.yml up -d --remove-orphans --build
+
+            if ! docker-compose -f docker-compose.prod.yml ps | grep portfolio_app | grep Up; then
+              echo "Deployment failed! Old containers remain running."
+              exit 1
+            fi
+
+            docker image prune -f

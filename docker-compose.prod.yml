@@ -1,20 +1,9 @@
 services:
-  db:
-    image: postgres
-    container_name: ud_vote_db
-    ports:
-      - "${DB_PORT}:5432"
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - ./postgres-ud-vote:/var/lib/postgresql/data
-    restart: always
-
   ud-vote:
-    build: .
+    image: ${DOCKER_HUB_USERNAME}/ud-vote:latest
     container_name: ud_vote_app
+    depends_on:
+      - db
     ports:
       - "${APP_PORT}:8080"
     environment:
@@ -53,8 +42,28 @@ services:
       - ./uploads/images:/ud_vote_spring_app/${URL_IMAGE}
       - ./uploads/videos:/ud_vote_spring_app/${URL_VIDEO}
       - ./uploads/files:/ud_vote_spring_app/${URL_DOCUMENT}
-    depends_on:
-      - db
-    command: ["./wait-for-it.sh", "db:5432", "--", "java", "-jar", "ud_vote.jar"]
     restart: always
+    networks:
+      - app-network
 
+  db:
+    image: postgres
+    container_name: ud_vote_db
+    restart: always
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:
+    driver: bridge
